@@ -18,23 +18,17 @@ function isGreater(int $number):string
 
 function isGreater_switch(int $number):string
 {
-	switch (true) {
-	    case 0 || $number <= 10:
-	        return "Equal or less than 10";
-			break;
-			
-		case $number > 30:
-			return "More than 30";
-			break;
-			
-		case $number > 20 && $number <= 30:
-			return "More than 20";
-			break;
-			
-		case $number >10 && $number <= 20:
-			return "More than 10";
-			break;
-	}
+	switch (true) 
+	    {
+            case $number > 30:
+                return "More than 30";
+            case $number > 20:
+                return "More than 20";
+            case $number > 10:
+                return "More than 10";
+            default:
+                return "Equal or less than 10";
+        }
 }
 
 

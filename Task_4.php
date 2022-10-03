@@ -1,33 +1,33 @@
 <?php 
 
 
-function deleteByKey(array $arr, int $position):array
-{
+function deleteByKey(array $arr, int $position)
+{	
+	if (count($arr) === 0) {return $arr;}
+	if (!in_array($position, array_keys($arr))) 
+		{return "Position $position is not exist!";}
+
 	unset($arr[$position]);
-	$result = array_values($arr);
-	return $result;
 
-}
-
-
-$arrays = array(
-	[1,2,3,4,5],
-	['a','b','c','d'],
-	[]
-); 
-
-
-foreach ($arrays as $arr) {
-	$rand_position = rand(0,count($arr));
-	// $position = 3; 
-	$result_arr = deleteByKey($arr,$rand_position); // or $positon
-	echo "Before removal<br>";
-	print_r($arr);
-	echo "<br>";
-	echo "Delete element on $rand_position position:<br>";
-	print_r($result_arr);
-	echo "<br><br>";
+	if ($arr) 
+	{
+		$keys = range(0,count($arr)-1);
+		return array_combine($keys, $arr);
+	}
 	
+	return $arr;
+
 }
 
 
+
+var_dump(deleteByKey([1,2,3,4,5],7));
+echo "<br>";
+var_dump(deleteByKey(['a','b','c','d'],2));
+echo "<br>";
+var_dump(deleteByKey([],0));
+var_dump(deleteByKey([],1));
+
+echo "<br>";
+var_dump(deleteByKey([1],0));
+var_dump(deleteByKey([1],-1));

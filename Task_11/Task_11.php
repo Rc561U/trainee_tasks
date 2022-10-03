@@ -27,7 +27,6 @@ class Pathfinder
         {
             $this->breadth_first_search();
             $this->getShortestPath();
-
         }
         else 
         {
@@ -75,7 +74,6 @@ class Pathfinder
 
             if ($node['coordinate'] == $this->end) {
                 $this->all_path[] = $node;
-
                 return true;
             }
 
@@ -124,7 +122,7 @@ class Pathfinder
         $start = json_encode($this->start);
         $end = json_encode($this->end);
         if (is_array($result)) {
-            return "The shortest path fom point $start to point $end is:"."<br>".json_encode($result);
+            return "The shortest path from point $start to point $end is:"."<br>".json_encode($result);
         }
         else
         {
@@ -139,9 +137,7 @@ class Pathfinder
         $x = $point[0];
         $y = $point[1];
 
-        if(0 <= $x && $x < 10 && 0 <= $y && $y < 10 && !$grid[$x][$y])
-
-        {
+        if(0 <= $x && $x < 10 && 0 <= $y && $y < 10 && !$grid[$x][$y]){
             return true;
         }
         return false;
@@ -194,28 +190,18 @@ class Pathfinder
         $handle = @fopen($this->storage, 'r+');
         if ($handle)
         {
-            // seek to the end
+            
             fseek($handle, 0, SEEK_END);
-
-            // are we at the end of is the file empty
             if (ftell($handle) > 0)
             {
-                // move back a byte
                 fseek($handle, -1, SEEK_END);
-
-                // add the trailing comma
                 fwrite($handle, ',', 1);
-
-                // add the new json string
                 fwrite($handle, json_encode($breadth_first_search_attempts,JSON_PRETTY_PRINT) . ']');
             }
             else
             {
-                // write the first event inside an array
                 fwrite($handle, json_encode(array($breadth_first_search_attempts),JSON_PRETTY_PRINT));
             }
-
-                // close the handle on the file
                 fclose($handle);
         }
 
@@ -237,12 +223,9 @@ $grid = [
     [0,1,0,0,1,0,1,1,1,0],
 ];
 
-$start = [0, 2];  // [Y,X]
+$start = [0, 1];  // [Y,X]
 $finish = [9, 2]; // [Y,X]
 
 
 $bfs = new Pathfinder($grid, $start, $finish); 
 echo $bfs;
-
-
-

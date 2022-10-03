@@ -33,11 +33,11 @@ function isGreater_switch(int $number):string
 
 
 function isGreater_ternar(int $number):string
-{
-	$result = $number > 10 ? "More than 10" : "Equal or less than 10";
-    $result = $number > 20 ? "More than 20" : $result;
-    return $number > 30 ? "More than 30" : $result;
-}
+    {
+        return ($number > 30 ? "More than 30" : 
+               ($number > 20 ? "More than 20" : 
+               ($number > 10 ? "More than 10" : "Equal or less than 10")));
+    }
 
 
 

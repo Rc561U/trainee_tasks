@@ -1,8 +1,10 @@
-<?php 
+<?php
 
-function convert_to_one_num($number)
-{	
-	if ($number <= 0) {return "Incorrect date entered. Only positive numbers";}
+function convert_to_one_num(int $number): array
+{
+	if ($number <= 0) {
+		return "Incorrect date entered. Only positive numbers";
+	}
 
 	$result_arr = [];
 	if (strlen($number) == 1) {
@@ -15,17 +17,8 @@ function convert_to_one_num($number)
 		$number = strval($sum_of_array);
 		$result_arr[] = $number;
 	}
-	return $result_arr;	
-
+	return $result_arr;
 }
 
 
-$nums = array(-111, 5689,800000,15,0,42135123,1283);
-
-foreach ($nums as $num) {
-	$result = convert_to_one_num($num);
-	
-	echo is_array($result) ? json_encode(convert_to_one_num($num)) : $result;
-
-	echo "<br>";
-}
+print_r(convert_to_one_num(123321));

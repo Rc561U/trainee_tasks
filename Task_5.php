@@ -4,7 +4,7 @@
 function NaturalNumbers(int $number, int $number2)
 {
 	if ($number === $number2) {
-		echo "$number ";
+		echo $number;
 		return $number;
 	}
 	if ($number <= $number2) {

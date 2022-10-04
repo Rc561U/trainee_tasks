@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 class Matrix
@@ -26,11 +26,11 @@ class Matrix
 
 
 	public function multiplyByNum(int $number)
-	{	
+	{
 		$newMatrix = $this->matrix;
 
-		for ($i=0; $i < count($newMatrix); $i++) { 
-			for ($j=0; $j < count($newMatrix[$i]); $j++) { 
+		for ($i = 0; $i < count($newMatrix); $i++) {
+			for ($j = 0; $j < count($newMatrix[$i]); $j++) {
 				$newMatrix[$i][$j] = $newMatrix[$i][$j] * $number;
 			}
 		}
@@ -39,7 +39,7 @@ class Matrix
 
 
 	public function multiplyMatrix(array $inputMatrix)
-	{	
+	{
 		if (!$this->checkMatrix($inputMatrix)) {
 			echo $this->error_msg;
 			return;
@@ -49,40 +49,37 @@ class Matrix
 		$newMatrix = array();
 		$matrLen = $this->rows;
 
-		for ($i = 0; $i < $matrLen; $i++)
-		    {
-		        for ($j = 0; $j < $matrLen; $j++)
-		        {
-		            $newMatrix[$i][$j] = 0;
-		            for ($k = 0; $k < $matrLen; $k++)
-		                $newMatrix[$i][$j] += $oldMatrix[$i][$k] * $inpMatrix[$k][$j];
-		        }
-		    }
+		for ($i = 0; $i < $matrLen; $i++) {
+			for ($j = 0; $j < $matrLen; $j++) {
+				$newMatrix[$i][$j] = 0;
+				for ($k = 0; $k < $matrLen; $k++)
+					$newMatrix[$i][$j] += $oldMatrix[$i][$k] * $inpMatrix[$k][$j];
+			}
+		}
 		return $newMatrix;
-		
 	}
 
-	public function addMatrix(array $userAddMatrix) 
-	{	
+	public function addMatrix(array $userAddMatrix)
+	{
 		if (!$this->checkMatrix($userAddMatrix)) {
 			echo $this->error_msg;
 			return;
 		}
 
-        $newMatrix = [];
-        for ($i = 0; $i < $this->rows; $i++) {
-            for ($j = 0; $j < $this->cols; $j++) {
-                $newMatrix[$i][$j] = $this->matrix[$i][$j] + $userAddMatrix[$i][$j];
-            }
-        }
-        
-        return $newMatrix;
+		$newMatrix = [];
+		for ($i = 0; $i < $this->rows; $i++) {
+			for ($j = 0; $j < $this->cols; $j++) {
+				$newMatrix[$i][$j] = $this->matrix[$i][$j] + $userAddMatrix[$i][$j];
+			}
+		}
+
+		return $newMatrix;
 	}
 
 
-	private function checkMatrix(array $matrix) : bool	
+	private function checkMatrix(array $matrix): bool
 	{
-		return count($matrix) == $this->rows ? true : false ;
+		return count($matrix) == $this->rows ? true : false;
 	}
 
 
@@ -91,11 +88,10 @@ class Matrix
 		$this->rows = count($matrix);
 		$this->cols = count($matrix[0]);
 	}
-	
 }
 
 function showMatrix($matrix)
-{	
+{
 	if (!is_array($matrix)) {
 		return $matrix;
 	}
@@ -109,10 +105,10 @@ function showMatrix($matrix)
 
 // Initialize new matrix class
 $matrix = array(
-			[1,2,3],
-			[4,5,6],
-			[7,8,9],
-		);
+	[1, 2, 3],
+	[4, 5, 6],
+	[7, 8, 9],
+);
 
 $myMatrix = new Matrix($matrix);
 echo "Default matrix<br>";
@@ -125,10 +121,10 @@ showMatrix($res);
 
 // Multiply two matrix block
 $new_matrix = array(
-			[1,2,3],
-			[4,5,6],
-			[7,8,9],
-		);
+	[1, 2, 3],
+	[4, 5, 6],
+	[7, 8, 9],
+);
 echo "<br>Multiply operation<br>";
 $res2 = $myMatrix->multiplyMatrix($new_matrix);
 showMatrix($res2);
@@ -145,8 +141,6 @@ echo "<br>Test operation<br>";
 $res2 = $myMatrix->multiplyMatrix($new_matrix);
 showMatrix($res2);
 echo "<br>";
-$new_matrix = [[1,2,3],[5,6,7],[9,10,11],[9,10,11],[9,10,11]];
+$new_matrix = [[1, 2, 3], [5, 6, 7], [9, 10, 11], [9, 10, 11], [9, 10, 11]];
 $res2 = $myMatrix->addMatrix($new_matrix);
 showMatrix($res2);
-
-

@@ -1,10 +1,9 @@
-<?php 
+<?php
 
 function validUrl(string $url): string
 {
 	$url_validation_regex = "/https?:\/\/(www\.)?[-\w\d]{1,256}\.[\w\d]{1,6}\b([\w\d()\+.#?&-\/\/=]*)/";
 	return preg_match($url_validation_regex, $url) ? "OK" : "Not a valid URL";
-	
 }
 
 

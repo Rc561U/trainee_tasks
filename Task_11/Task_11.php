@@ -4,7 +4,7 @@
 class Pathfinder
 {
     private $storage = "data.json";
-    
+
     public $start;
     public $end;
     public $all_path;
@@ -14,7 +14,7 @@ class Pathfinder
     public $result;
 
 
-    public function __construct($maze, $start, $end)
+    public function __construct(array $maze, array $start, array $end)
     {
         $this->maze = $maze;
         $this->start = $start;
@@ -23,22 +23,19 @@ class Pathfinder
 
         array_push($this->queue, ['parent' => [], 'coordinate' => $start]);
 
-        if ($this->validateUserPoints($start) && $this->validateUserPoints($end)) 
-        {
+        if ($this->validate_user_points($start) && $this->validate_user_points($end)) {
             $this->breadth_first_search();
-            $this->getShortestPath();
-        }
-        else 
-        {
+            $this->get_shortest_path();
+        } else {
             $this->result = 'Incorrect data entry';
-            $this->storeData();
+            $this->store_data();
         }
     }
 
-    
+
 
     ///////////////// Algorithm block ///////////////////////////
-    public function get_next_nodes(array $node)
+    public function get_next_nodes(array $node): array
     {
         $link = [];
         if (empty($node)) {
@@ -89,8 +86,8 @@ class Pathfinder
         }
     }
 
-    
-    public function getShortestPath()
+
+    public function get_shortest_path(): void
     {
         $stack = [];
         $answer = [];
@@ -111,46 +108,44 @@ class Pathfinder
             }
         }
         $this->result = $answer;
-        $this->storeData();
+        $this->store_data();
     }
 
 
     ////////////////// Support block ////////////////////////////
-    public function __toString()    
+    public function __toString(): string
     {
         $result = $this->result;
         $start = json_encode($this->start);
         $end = json_encode($this->end);
         if (is_array($result)) {
-            return "The shortest path from point $start to point $end is:"."<br>".json_encode($result);
-        }
-        else
-        {
+            return "The shortest path from point $start to point $end is:" . "<br>" . json_encode($result);
+        } else {
             return $result;
         }
     }
 
 
-    public function validateUserPoints($point)
+    public function validate_user_points($point): bool
     {
         $grid = $this->maze;
         $x = $point[0];
         $y = $point[1];
 
-        if(0 <= $x && $x < 10 && 0 <= $y && $y < 10 && !$grid[$x][$y]){
+        if (0 <= $x && $x < 10 && 0 <= $y && $y < 10 && !$grid[$x][$y]) {
             return true;
         }
         return false;
     }
 
     ////////// Optional block ///////////////////////////////////
-    public function generateNewGrid()
+    public function generate_new_grid(): void
     {
         $grid = array();
-        for ($i=0; $i < 10; $i++) { 
+        for ($i = 0; $i < 10; $i++) {
             $z = array();
-            for ($j=0; $j < 10; $j++) { 
-                $ran = array(0,0,1);
+            for ($j = 0; $j < 10; $j++) {
+                $ran = array(0, 0, 1);
                 $z[] =  $ran[array_rand($ran, 1)];
             }
             $grid[] = $z;
@@ -159,27 +154,25 @@ class Pathfinder
     }
 
 
-    public function showGrid()
+    public function show_grid(): void
     {
-       foreach ($this->maze as $array) 
-           {
-               foreach ($array as $element) 
-               {
-                   echo $element . " ";
-               }
-               echo "<br>";
-           } 
+        foreach ($this->maze as $array) {
+            foreach ($array as $element) {
+                echo $element . " ";
+            }
+            echo "<br>";
+        }
     }
 
 
-    public function setNewPoints(array $a, array $b)
+    public function set_new_points(array $a, array $b): void
     {
         $this->start = $a;
         $this->end = $b;
     }
-    ////////////////// Save log block ///////////////////////////
 
-    private function storeData()
+    ////////////////// Save log block ///////////////////////////
+    private function store_data()
     {
         $breadth_first_search_attempts = [
             "Start point" => json_encode($this->start),
@@ -188,44 +181,39 @@ class Pathfinder
         ];
 
         $handle = @fopen($this->storage, 'r+');
-        if ($handle)
-        {
-            
+        if ($handle) {
+
             fseek($handle, 0, SEEK_END);
-            if (ftell($handle) > 0)
-            {
+            if (ftell($handle) > 0) {
                 fseek($handle, -1, SEEK_END);
                 fwrite($handle, ',', 1);
-                fwrite($handle, json_encode($breadth_first_search_attempts,JSON_PRETTY_PRINT) . ']');
+                fwrite($handle, json_encode($breadth_first_search_attempts, JSON_PRETTY_PRINT) . ']');
+            } else {
+                fwrite($handle, json_encode(array($breadth_first_search_attempts), JSON_PRETTY_PRINT));
             }
-            else
-            {
-                fwrite($handle, json_encode(array($breadth_first_search_attempts),JSON_PRETTY_PRINT));
-            }
-                fclose($handle);
+            fclose($handle);
         }
-
     }
 }
 
 
 
 $grid = [
-    [0,1,0,1,1,0,1,0,1,0],
-    [0,1,0,0,0,0,1,0,1,0],
-    [0,1,1,0,1,0,1,0,0,0],
-    [0,0,0,1,1,0,1,1,1,0],
-    [0,1,0,0,0,0,0,0,1,0],
-    [0,1,0,1,1,1,1,0,1,0],
-    [0,1,0,0,1,0,1,0,0,0],
-    [0,1,0,0,1,0,1,0,1,0],
-    [0,1,0,0,1,0,0,0,1,0],
-    [0,1,0,0,1,0,1,1,1,0],
+    [0, 1, 0, 1, 1, 0, 1, 0, 1, 0],
+    [0, 1, 0, 0, 0, 0, 1, 0, 1, 0],
+    [0, 1, 1, 0, 1, 0, 1, 0, 0, 0],
+    [0, 0, 0, 1, 1, 0, 1, 1, 1, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 1, 0, 1, 1, 1, 1, 0, 1, 0],
+    [0, 1, 0, 0, 1, 0, 1, 0, 0, 0],
+    [0, 1, 0, 0, 1, 0, 1, 0, 1, 0],
+    [0, 1, 0, 0, 1, 0, 0, 0, 1, 0],
+    [0, 1, 0, 0, 1, 0, 1, 1, 1, 0],
 ];
 
 $start = [0, 0];  // [Y,X]
 $finish = [9, 2]; // [Y,X]
 
 
-$bfs = new Pathfinder($grid, $start, $finish); 
+$bfs = new Pathfinder($grid, $start, $finish);
 echo $bfs;

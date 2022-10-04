@@ -69,6 +69,7 @@ class Calculator
     }
 }
 
+
 $mycalc = new Calculator(4, 2);
 echo $mycalc->add();
 echo "\n";

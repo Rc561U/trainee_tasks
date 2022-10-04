@@ -41,5 +41,5 @@ class Birthday
 }
 
 //  29-01-1994
-$my = new Birthday("29-11-1191");
+$my = new Birthday("29-01-1998");
 echo $my;

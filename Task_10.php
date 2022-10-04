@@ -57,7 +57,6 @@ class Calculator
 
     public function divideBy(int|float $input_number): string|int|float
     {
-
         if ($input_number === 0) {
             return "You cannot divide by 0";
         }

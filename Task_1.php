@@ -1,6 +1,6 @@
 <?php
 
-function isGreater(int $number): string
+function is_greater(int $number): string
 {
     if ($number > 30) {
         return "More than 30";
@@ -39,7 +39,7 @@ function is_greater_ternary(int $number): string
 
 $num_arr = array(-2, 0, 10, 12, 20, 21, 30, 34, 100);
 foreach ($num_arr as $number) {
-    echo "If-conditions for $number: " . isGreater($number) . "<br>";
+    echo "If-conditions for $number: " . is_greater($number) . "<br>";
     echo "Switch for $number: " . is_greater_switch($number) . "<br>";
     echo "Ternary for $number: " . is_greater_ternary($number) . "<br>";
     echo "<br>";

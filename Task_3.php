@@ -1,6 +1,6 @@
 <?php
 
-function convert_to_one_num(int $number): array
+function convert_to_one_num(int $number): array|string
 {
 	if ($number <= 0) {
 		return "Incorrect date entered. Only positive numbers";

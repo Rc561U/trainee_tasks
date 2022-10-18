@@ -7,7 +7,7 @@
         <div class="row">
 
             <div class="col">
-                <form method="post" id="create_form" >
+                <form method="post" id="create_form" action="create">
 
                     <!-- Email unigue -->
                     <div class="mb-3 ">

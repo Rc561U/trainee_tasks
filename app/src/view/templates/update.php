@@ -4,7 +4,7 @@
         <div class="row">
 
             <div class="col">
-                <form method="post" action="../models/update.php">
+                <form method="post" action="update">
                     <!-- Email unique -->
                     <div class="mb-3">
                         <label for="inputEmail" class="form-label">Email address</label>
@@ -21,10 +21,8 @@
                     <!-- Gender dropdown -->
                     <label>Gender</label>
                     <select name="gender" class="form-control">
-
                         <option value="Male" <?php if($result['gender']=="Male") echo "selected=\"selected\""; ?>>Male</option>
                         <option value="Female" <?php if($result['gender']=="Female") echo "selected=\"selected\""; ?>>Female</option>
-
                     </select>
 
                     <!-- Status dropdown -->

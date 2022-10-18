@@ -6,14 +6,14 @@ use Crud\Mvc\core\Model;
 
 class User extends Model
 {
-    public function createUser()
+    public function createUser($email, $full_name, $gender, $status)
     {
-        $query = $this->databaseConnection->prepare("INSERT INTO  `test`.`users` (`email`,`full_name`,`gender`,`status`) VALUES (:email, :full_name, :gender, :status)");
+        $query = $this->database->prepare("INSERT INTO  `test`.`users` (`email`,`full_name`,`gender`,`status`) VALUES (:email, :full_name, :gender, :status)");
         $query->execute([
-            'email' => $this->email,
-            'full_name' => $this->name,
-            'gender' => $this->gender,
-            'status' => $this->status,
+            'email' => $email,
+            'full_name' => $full_name,
+            'gender' => $gender,
+            'status' => $status,
         ]);
 
         return $query;

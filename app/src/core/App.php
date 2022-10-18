@@ -12,12 +12,15 @@ class App
     public $uri;
     public $action;
     public $id;
+    public $requestMethod;
 
     function __construct()
     {
         $this->uri = $_SERVER["REQUEST_URI"];
         $this->isActionExists();
         $this->id = $_GET['id'] ?? "";
+        $this->requestMethod = $_SERVER["REQUEST_METHOD"];
+
     }
 
     public function route($action, $callback)
@@ -45,7 +48,7 @@ class App
         if (method_exists(UserController::class, $action)) {
             $this->action = $action;
         } else {
-            $this->action = null;;;
+            $this->action = null;
         }
     }
 
@@ -57,14 +60,11 @@ class App
     public function start()
     {
         $action = $this->action;
-        try {
+        $method = $this->requestMethod;
+        if ($method === "GET") {
             switch ($action) {
-                case $action == "read":
-                    $start = new UserController();
-                    $start->$action();
-                    break;
-
                 case $action == "create":
+                case $action == "read":
                     $start = new UserController();
                     $start->$action();
                     break;
@@ -78,14 +78,29 @@ class App
                     $start = new UserController();
                     $start->$action($this->id);
 //                    header("Location: read");
-
             }
-        }catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }elseif ($method === "POST"){
+            $this->postUserData();
         }
 
 
     }
+    public function postUserData()
+    {
 
+        $email = $_POST['email'];
+        $full_name = $_POST['name'];
+        $gender = $_POST['gender'];
+        $status = $_POST['status'];
+        $id = $_POST['id'] ?? "";
+        $result = new UserController();
+        if ($this->action === "update"){
+            $result->updatePost($email, $full_name, $gender, $status, $id);
+        }
+        elseif ($this->action === "create"){
+            $result->createPost($email, $full_name, $gender, $status);
+        }
+
+    }
 
 }

@@ -33,7 +33,7 @@ validation
         },
         {
             validator: (value) => () => {
-                return fetch("../models/check.email.php", {
+                return fetch("src/models/email.php", {
                     method: 'POST',
                     body: JSON.stringify({'email':value}),
                 })
@@ -49,23 +49,24 @@ validation
 
     ])
     .onSuccess((event) => {
-        var form = document.getElementById("create_form");
-        var formdata = new FormData(form);
-
-
-        fetch('../models/save.php',{
-            method: 'POST',
-            body: formdata,
-        })
-            .then(res => res.json())
-            .then(data => {
-                let statusMsg = document.getElementById('status');
-                statusMsg.innerHTML=
-                `<div class="alert alert-success" role="alert">
-                ${data.status}
-                </div>`
-
-
-
-            })
+        document.getElementById("create_form").submit();
+        // var form = document.getElementById("create_form");
+        // var formdata = new FormData(form);
+        //
+        //
+        // fetch('../models/save.php',{
+        //     method: 'POST',
+        //     body: formdata,
+        // })
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         let statusMsg = document.getElementById('status');
+        //         statusMsg.innerHTML=
+        //         `<div class="alert alert-success" role="alert">
+        //         ${data.status}
+        //         </div>`
+        //
+        //
+        //
+        //     })
     });

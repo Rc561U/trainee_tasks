@@ -2,8 +2,6 @@
 
 namespace Crud\Mvc\core;
 
-use Crud\Mvc\core\DbConnect;
-
 
 class Model
 {
@@ -12,7 +10,7 @@ class Model
     private string $user = 'root';
     private string $password = 'rootpass';
 
-    protected object $database;
+    public object $database;
 
 
     public function __construct()
@@ -22,7 +20,7 @@ class Model
         try {
             $options = [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION];
 
-            $this->database =  new \PDO($dsn, $this->user, $this->password, $options);
+            $this->database = new \PDO($dsn, $this->user, $this->password, $options);
         } catch (PDOException $e) {
             die($e->getMessage());
         }

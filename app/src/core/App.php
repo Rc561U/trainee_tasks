@@ -69,35 +69,29 @@ class App
                     $start->$action();
                     break;
 
+                case $action == "delete":
                 case $action == "update":
                     $start = new UserController();
                     $start->$action($this->id);
                     break;
 
-                case $action == "delete":
-                    $start = new UserController();
-                    $start->$action($this->id);
-//                    header("Location: read");
             }
-        }elseif ($method === "POST"){
+        } elseif ($method === "POST") {
             $this->postUserData();
         }
-
-
     }
+
     public function postUserData()
     {
-
         $email = $_POST['email'];
         $full_name = $_POST['name'];
         $gender = $_POST['gender'];
         $status = $_POST['status'];
         $id = $_POST['id'] ?? "";
         $result = new UserController();
-        if ($this->action === "update"){
+        if ($this->action === "update") {
             $result->updatePost($email, $full_name, $gender, $status, $id);
-        }
-        elseif ($this->action === "create"){
+        } elseif ($this->action === "create") {
             $result->createPost($email, $full_name, $gender, $status);
         }
 

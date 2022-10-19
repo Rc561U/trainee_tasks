@@ -1,14 +1,14 @@
 {
-    "name": "crud/mvc",
-    "autoload": {
-        "psr-4": {
-            "Crud\\Mvc\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Anton Ramancou"
-        }
-    ],
-    "require": {}
+  "name": "crud/mvc",
+  "autoload": {
+    "psr-4": {
+      "Crud\\Mvc\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Anton Ramancou"
+    }
+  ],
+  "require": {}
 }

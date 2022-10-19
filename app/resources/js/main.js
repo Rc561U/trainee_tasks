@@ -1,53 +1,28 @@
-const post = async (url, params) => {
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(params),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        }
-    })
-    const data = await response.json()
-    return data
+const modal = document.getElementById("myModal");
+const span = document.getElementById("close");
+
+
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
 addEventListener("click", function (event) {
-    // const button = document.querySelector("#deleteBtn")
-    // let value = event.target.value
-
 
     if (event.target.className === "btn btn-dark") {
-        const button = document.querySelector("#deleteBtn")
-        let value = event.target.value
-        // console.log(value)
-
-
-        // Then use it like so with async/await:
-        (async () => {
-            const data = await post('../models/delete.php', {
-                'user_id':value
-            })
-            console.log(data.status)
-        })()
+        modal.style.display = "block";
+        let anchor = document.getElementById('delete_link');
+        anchor.href = "delete?id=" + event.target.value;
     }
 
 
 
 })
 
-// fetch("../models/delete.php", {
-//     method: 'POST',
-//     body: JSON.stringify({'user_id':value}),
-// })
-//     .then(res => res.json())
-//     .then(data => {
-//
-//         let statusMsg = document.getElementById('reed_status');
-//         console.log(data.status)
-//         statusMsg.innerHTML=
-//             `<div class="alert alert-success" role="alert">
-//             ${data.status}
-//             </div>`
-//     })
-
-// })
 

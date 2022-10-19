@@ -4,10 +4,10 @@ namespace Crud\Mvc\core;
 
 class Controller
 {
-    protected function render($page,$content=null)
+    protected function render($page, $content = null)
     {
-        if (isset($content)){
-        $result = $content;
+        if (isset($content)) {
+            $result = $content;
         }
 
         require_once "src/view/header.php";

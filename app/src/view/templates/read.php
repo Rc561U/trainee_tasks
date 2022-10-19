@@ -9,6 +9,7 @@
         <div id="reed_status">
 
         </div>
+
         <?php if ($result) { ?>
             <table class="table table-striped">
                 <thead>
@@ -24,29 +25,46 @@
                 <tbody>
                 <?php
                 $i = 0;
-                while ($rows = $result->fetch(PDO::FETCH_ASSOC)){
+
+                while ($rows = $result->fetch(PDO::FETCH_ASSOC)) {
                     $i++;
                     ?>
                     <tr>
-                        <th scope="row"><?=$i?></th>
-                        <td><?=$rows['email']?></td>
+                        <th scope="row"><?= $i ?></th>
+                        <td><?= $rows['email'] ?></td>
                         <td><?php echo $rows['full_name']; ?></td>
                         <td><?php echo $rows['gender']; ?></td>
                         <td><?php echo $rows['status']; ?></td>
 
-                        <td><a href="update?id=<?=$rows['user_id']?>"
-                               class="btn btn-success">Update</a>
+                        <td>
+                            <a href="update?id=<?= $rows['user_id'] ?>" class="btn btn-success">Update</a>
+                            <button id="myBtn" class="btn btn-dark" value="<?= $rows['user_id'] ?>">Delete</button>
 
-                            <a href="delete?id=<?=$rows['user_id']?>"
-                               class="btn btn-danger" >Delete</a>
-<!--                            <button class="btn btn-dark" id="deleteBtn" value="--><?//=$rows['user_id']?><!--" type="submit">test</button>-->
+                            <!-- The Modal -->
+                            <div id="myModal" class="modal">
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5>Are you sure?</h5>
+                                    </div>
+
+                                    <div class="modal-footer ">
+                                        <a id="delete_link" href="" class="btn btn-danger">Delete</a>
+                                        <button type="button" id ="close" class="btn btn-secondary" >Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
+
                     </tr>
                 <?php } ?>
                 </tbody>
             </table>
         <?php } ?>
+
+
         <div class="link-right">
+
             <a href="create" class="link-primary">Create</a>
         </div>
     </div>

@@ -19,6 +19,7 @@ class User extends Model
         return $query;
 
     }
+
     public function deleteUserById($user_id)
     {
         $sql = 'DELETE FROM users WHERE user_id = :user_id';
@@ -26,9 +27,8 @@ class User extends Model
         $statement = $this->database->prepare($sql);
         $statement->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
         return $statement->execute();
-
-
     }
+
     public function getUserPageById($id)
     {
         $sth = $this->database->prepare('SELECT * FROM `users` WHERE user_id = ?');
@@ -54,8 +54,6 @@ class User extends Model
         $result = $this->database->query('SELECT * FROM test.users');
         return $result;
     }
-
-
 
 
 }

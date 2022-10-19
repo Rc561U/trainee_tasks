@@ -33,14 +33,15 @@ validation
         },
         {
             validator: (value) => () => {
-                return fetch("src/models/email.php", {
+                return fetch("/src/validation/check_email.php", {
                     method: 'POST',
-                    body: JSON.stringify({'email':value}),
+                    body: JSON.stringify({'email': value}),
                 })
-                    .then(function(response) {
+                    .then(function (response) {
                         return response.json();
                     })
-                    .then(function(json) {
+
+                    .then(function (json) {
                         return json.available;
                     });
             },

@@ -1,5 +1,4 @@
 <?php
-
 $db = require_once "../models/validationDb.php";
 
 $str_json = file_get_contents('php://input'); //($_POST doesn't work here)

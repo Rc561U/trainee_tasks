@@ -28,15 +28,14 @@ class UserController extends Controller
 
     public function updatePost($email, $full_name, $gender, $status, $id)
     {
-        $result = $this->database->updateUserById($email, $full_name, $gender, $status, $id);
-        header("Location: read?success=User data successfully updated!");
+        $this->database->updateUserById($email, $full_name, $gender, $status, $id);
+        header("Location: read?update=User data successfully updated!");
     }
 
     public function createPost($email, $full_name, $gender, $status)
     {
-        $result = $this->database->createUser($email, $full_name, $gender, $status);
-//        echo "New user successfully created";
-        header("Location: read?success=New user successfully created!");
+        $this->database->createUser($email, $full_name, $gender, $status);
+        header("Location: read?create=New user successfully created!");
     }
 
     public function create()
@@ -47,8 +46,18 @@ class UserController extends Controller
 
     public function delete($user_id)
     {
-        $result = $this->database->deleteUserById($user_id);
-        header("Location: read?success=User has been deleted!");
+        $this->database->deleteUserById($user_id);
+        header("Location: read?delete=User has been deleted!");
+    }
+
+    public function error()
+    {
+        $this->render("error.php");
+    }
+
+    public function validationError()
+    {
+        $this->render('validationError.php');
     }
 }
 

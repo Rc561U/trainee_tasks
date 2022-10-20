@@ -6,40 +6,28 @@ use Crud\Mvc\controllers\UserController;
 
 class App
 {
-    private $config = [];
-    public object $db;
-    public array $routes;
-    public $uri;
-    public $action;
-    public $id;
-    public $requestMethod;
+    use Validator;
+
+
+    public string $uri;
+    public string $action;
+    public string $id;
+    public mixed $requestMethod;
+
+    private object $controller;
 
     function __construct()
     {
         $this->uri = $_SERVER["REQUEST_URI"];
-        $this->isActionExists();
         $this->id = $_GET['id'] ?? "";
         $this->requestMethod = $_SERVER["REQUEST_METHOD"];
+        $this->isActionExists();
 
+        $this->controller = new UserController();
     }
 
-    public function route($action, $callback)
-    {
-
-        $action = trim($action, '/');
-        $this->routes[$action] = $callback;
-
-    }
-
-    public function dispatch($action)
-    {
-        $action = trim($action, '/');
-        $callback = $this->routes[$action];
-
-        echo call_user_func($callback);
-    }
-
-    public function isActionExists()
+    // check if action exists in UserController class
+    public function isActionExists(): void
     {
         $action = $this->uri;
         $action = explode("?", $action);
@@ -48,53 +36,74 @@ class App
         if (method_exists(UserController::class, $action)) {
             $this->action = $action;
         } else {
-            $this->action = null;
+            $this->action = false;
         }
     }
 
-    public function getURI()
-    {
-        return $_SERVER["REQUEST_URI"];
-    }
-
-    public function start()
+    public function start(): void
     {
         $action = $this->action;
         $method = $this->requestMethod;
-        if ($method === "GET") {
+
+        if ($method === "GET" && $action) {
             switch ($action) {
                 case $action == "create":
                 case $action == "read":
-                    $start = new UserController();
+                    $start = $this->controller;
                     $start->$action();
                     break;
 
                 case $action == "delete":
                 case $action == "update":
-                    $start = new UserController();
+                    $start = $this->controller;
                     $start->$action($this->id);
+                    break;
+                default:
+                    $start = $this->controller;
+                    $start->error();
                     break;
 
             }
-        } elseif ($method === "POST") {
+        } elseif ($method === "POST" && $action) {
             $this->postUserData();
+        } else {
+            $start = $this->controller;
+            $start->error();
         }
     }
 
-    public function postUserData()
+    public function postUserData(): void
     {
         $email = $_POST['email'];
         $full_name = $_POST['name'];
-        $gender = $_POST['gender'];
-        $status = $_POST['status'];
+        $gender = $_POST['gender'] ?? "";
+        $status = $_POST['status'] ?? "";
         $id = $_POST['id'] ?? "";
-        $result = new UserController();
-        if ($this->action === "update") {
-            $result->updatePost($email, $full_name, $gender, $status, $id);
-        } elseif ($this->action === "create") {
-            $result->createPost($email, $full_name, $gender, $status);
+
+        $result = $this->controller;
+        if ($this->action === 'create') {
+            $validationResult = $this->validate($email, $full_name, $gender, $status);
+        } elseif ($this->action === 'update') {
+            $validationResult = $this->validate($email, $full_name, $gender, $status, $id);
         }
 
+
+        if ($this->action === "update" && $validationResult) {
+            $result->updatePost($email, $full_name, $gender, $status, $id);
+        } elseif ($this->action === "create" && $validationResult) {
+            $result->createPost($email, $full_name, $gender, $status);
+        } else {
+            if ($validationResult)
+            {
+                $start = $this->controller;
+                $start->error();
+            }
+            else {
+                $this->controller->validationError();
+            }
+
+
+        }
     }
 
 }

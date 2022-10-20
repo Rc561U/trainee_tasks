@@ -10,8 +10,8 @@ class Controller
             $result = $content;
         }
 
-        require_once "src/view/header.php";
-        require_once "src/view/templates/$page";
-        require_once "src/view/footer.php";
+        require_once "src/views/header.php";
+        require_once "src/views/templates/$page";
+        require_once "src/views/footer.php";
     }
 }

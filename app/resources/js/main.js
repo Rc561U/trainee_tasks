@@ -1,8 +1,6 @@
 const modal = document.getElementById("myModal");
 const span = document.getElementById("close");
 
-
-
 span.onclick = function() {
     modal.style.display = "none";
 }
@@ -20,9 +18,6 @@ addEventListener("click", function (event) {
         let anchor = document.getElementById('delete_link');
         anchor.href = "delete?id=" + event.target.value;
     }
-
-
-
 })
 
 

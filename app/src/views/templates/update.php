@@ -4,19 +4,19 @@
         <div class="row">
 
             <div class="col">
-                <form method="post" action="update">
+                <form method="post" id="update_form" action="update">
                     <!-- Email unique -->
                     <div class="mb-3">
                         <label for="inputEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="inputEmail" name="email"
-                               value="<?= $result['email'] ?>" aria-describedby="emailHelp">
+                        <input type="email" class="form-control" id="email" name="email"
+                               value="<?= $result['email'] ?>" >
 
                     </div>
 
                     <!-- First and last name -->
                     <div class="mb-3">
                         <label class="form-label">Your first and last name</label>
-                        <input type="text" class="form-control" name="name" value="<?= $result['full_name'] ?>">
+                        <input type="text" class="form-control" id="name" name="name" value="<?= $result['full_name'] ?>">
                     </div>
 
                     <!-- Gender dropdown -->
@@ -43,18 +43,22 @@
 
                     </select>
 
-                    <!--                    Send user_id to models/update.php -->
+                    <!-- Send user_id to models/update.php -->
                     <input type="text"
                            name="id"
+                           id="user_id"
                            value="<?= $_GET['id'] ?>"
                            hidden>
 
-                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
-                    <p>or view <a href="read">existing</a></p>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                        <p>or view <a href="read">existing</a></p>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script src="/resources/js/update_validation.js" defer></script>
 
 

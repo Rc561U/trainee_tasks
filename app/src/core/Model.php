@@ -7,26 +7,15 @@ use App\Exceptions\DbException;
 
 class Model
 {
-    private string $host = 'mariadb';
-    private string $db = 'test';
-    private string $user = 'root';
-    private string $password = 'rootpass';
-    private string $tablename = 'users';
+    use DatabaseConnect;
 
+    private string $tablename = 'users';
     public object $database;
 
 
     public function __construct()
     {
-        $dsn = "mysql:host=$this->host;dbname=$this->db;charset=UTF8";
-
-        try {
-            $options = [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION];
-
-            $this->database = new \PDO($dsn, $this->user, $this->password, $options);
-        } catch (\PDOException $error) {
-            throw new DbException('No connection with database');
-        }
+        $this->database = $this->connect();
         $this->dumpUserTable();
     }
 

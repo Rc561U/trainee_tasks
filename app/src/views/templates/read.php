@@ -1,9 +1,19 @@
 <div class="container">
     <div class="box">
         <h4 class="display-4 text-center">Read</h4><br>
-        <?php if (isset($_GET['success'])) { ?>
+        <?php if (isset($_GET['create'])) { ?>
             <div class="alert alert-success" role="alert">
-                <?php echo $_GET['success']; ?>
+                <?php echo $_GET['create']; ?>
+            </div>
+        <?php } ?>
+        <?php if (isset($_GET['update'])) { ?>
+            <div class="alert alert-info" role="alert">
+                <?php echo $_GET['update']; ?>
+            </div>
+        <?php } ?>
+        <?php if (isset($_GET['delete'])) { ?>
+            <div class="alert alert-warning" role="alert">
+                <?php echo $_GET['delete']; ?>
             </div>
         <?php } ?>
         <div id="reed_status">
@@ -69,5 +79,7 @@
         </div>
     </div>
 </div>
+<script src="/resources/js/main.js" defer></script>
+
 
 

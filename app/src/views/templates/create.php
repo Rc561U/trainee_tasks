@@ -48,9 +48,11 @@
                         </select>
                     </div>
 
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                        <p>or view <a href="read">existing</a></p>
+                    </div>
 
-                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
-                    <p>or view <a href="read">existing</a></p>
 
 
                 </form>
@@ -59,5 +61,7 @@
         </div>
     </div>
 </div>
+<script src="/resources/js/create_validation.js" defer></script>
+
 
 

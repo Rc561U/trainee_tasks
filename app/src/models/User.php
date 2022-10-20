@@ -51,10 +51,23 @@ class User extends Model
 
     public function readUser()
     {
-        $result = $this->database->query('SELECT * FROM test.users');
-        return $result;
+        return $this->database->query('SELECT * FROM test.users');
     }
 
+    public function getEmailById($id)
+    {
+        $sth = $this->database->prepare('SELECT `email` FROM `users` WHERE user_id = ?');
+        $sth->execute([$id]);
+        return $sth->fetch(\PDO::FETCH_ASSOC)['email'] ?? false;
+    }
 
+    public function getEmail($email)
+    {
+        $sth = $this->database->prepare('SELECT `email` FROM `users` WHERE `email` = ?');
+        $sth->execute([$email]);
+        return $sth->fetch(\PDO::FETCH_ASSOC)['email'] ?? false;
+    }
 }
+
+
 

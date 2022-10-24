@@ -1,6 +1,7 @@
 <?php
 
-namespace Crud\Mvc\core;
+namespace Crud\Mvc\core\traits;
+
 use Crud\Mvc\models\User;
 
 trait Validator

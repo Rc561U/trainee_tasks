@@ -4,6 +4,7 @@ namespace Crud\Mvc\core;
 
 
 use App\Exceptions\DbException;
+use Crud\Mvc\core\traits\DatabaseConnect;
 
 class Model
 {

@@ -11,7 +11,7 @@ class Controller
         }
 
         require_once "src/views/header.php";
-        require_once "src/views/templates/$page";
+        require_once "src/views/user/$page";
         require_once "src/views/footer.php";
     }
 }

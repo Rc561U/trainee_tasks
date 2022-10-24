@@ -1,6 +1,6 @@
 <?php
 
-$db = require_once "../models/validationDb.php";
+$db = require_once "../models/DbConnect.php";
 
 $str_json = file_get_contents('php://input'); //($_POST doesn't work here)
 $response = json_decode($str_json, true);

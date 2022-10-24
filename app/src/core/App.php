@@ -3,6 +3,7 @@
 namespace Crud\Mvc\core;
 
 use Crud\Mvc\controllers\UserController;
+use Crud\Mvc\core\traits\Validator;
 
 class App
 {

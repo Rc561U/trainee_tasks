@@ -1,0 +1,5 @@
+1. http://localhost/                - Home page
+                                        - Vue,
+2. http://localhost/login           - Login page
+3. http://localhost/registration    - Registration page
+4. http://localhost/account         - User account

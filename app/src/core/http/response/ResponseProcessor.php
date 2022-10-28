@@ -13,7 +13,12 @@ class ResponseProcessor
         $this->clearHeaders();
         $this->processHeaders($response->getHeaders());
         $this->setCode($response->getCode());
-        $this->renderBody($response->getBody());
+        if ($response->getBody())
+        {
+            $this->renderBody($response->getBody());
+        }else{
+            $this->renderBodyHtml($response->getBodyHtml());
+        }
     }
 
     /**
@@ -45,11 +50,18 @@ class ResponseProcessor
     }
 
     /**
-     * @param string $body
+     * @param mixed $body
      * @return void
      */
-    protected function renderBody(string $body): void
+    protected function renderBody( mixed $body): void
     {
         echo $body;
+    }
+
+    protected function renderBodyHtml( mixed $body): void
+    {
+        require_once "src/views/header.php";
+        require $body;
+        require_once "src/views/footer.php";
     }
 }

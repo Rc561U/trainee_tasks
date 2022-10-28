@@ -19,6 +19,6 @@ class HtmlResponse extends AbstractResponse
      */
     public function setBody(mixed $body): void
     {
-        $this->body = (string)$body;
+        $this->body = $body;
     }
 }

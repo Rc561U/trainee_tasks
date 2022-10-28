@@ -6,10 +6,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` varchar(10) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `unique_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
 
 INSERT INTO `users` (`user_id`, `email`, `full_name`, `gender`, `status`) VALUES
-	(145,'localhost@mail.neta','','Female','Active'),
-	(147,'tes2221121t@email.comas','Jim Royal','Male','Active'),
-	(149,'test2@email.co','Jim Roayal','Female','Active'),
-	(150,'localhost@mail.net','Jim Royal','Male','Inactive');
+	(147,'te123s2t@email.com','Royal Roy','Male','Active'),
+	(151,'localhost@mail.net','Jim Royal','Male','Active'),
+	(152,'localhost@mail.nets','Jim Royal','Male','Active'),
+	(153,'localhost@mail.netas','Name Surname','Female','Active');

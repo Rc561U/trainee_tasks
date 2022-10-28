@@ -10,6 +10,7 @@ Abstract class AbstractResponse implements ResponseInterface
     protected ?string $protocol;
     protected mixed $body;
     protected int $code;
+    protected mixed $renderBodyHtml;
 
     /**
      * @param array $headers
@@ -87,5 +88,15 @@ Abstract class AbstractResponse implements ResponseInterface
     public function setCode(int $code): void
     {
         $this->code = $code;
+    }
+
+    public function setBodyHtml(mixed $body): void
+    {
+        $this->renderBodyHtml = $body;
+    }
+
+    public function getBodyHtml()
+    {
+        return $this->renderBodyHtml;
     }
 }

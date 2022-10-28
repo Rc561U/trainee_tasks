@@ -99,7 +99,39 @@ class User extends Model
         $sth->execute([$id]);
         return $sth->fetch(\PDO::FETCH_ASSOC);
     }
+
+    public function saveUploadFile($name,$size,$meta_data,$path,  $weight, $height, $created_date = null,){
+        $query = $this->database->prepare("INSERT INTO  `test`.`uploads` (`name`,`size`,`mime`,`path`, `created_date`, `weight`, `height` ) VALUES (:name, :size,:mime,:path, :created_date, :weight, :height)");
+        $query->execute([
+            "name" => $name,
+            "size" => $size,
+            "mime" => $meta_data,
+            "path" => $path,
+            "created_date" => $created_date,
+            "weight" => $weight,
+            "height" => $height
+        ]);
+
+        return $query;
+    }
+
+    public function getUploads()
+    {
+        $result = $this->database->query('SELECT * FROM test.uploads');
+        return $result->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function setExample($data)
+    {
+        $query = $this->database->prepare("INSERT INTO  `test`.`example` (`docs`) VALUES (:arr)");
+        $query->execute([
+            "arr" => $data
+        ]);
+    }
+    public function getExample()
+    {
+        $result = $this->database->query('SELECT * FROM test.example');
+        return $result->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
-
-
 

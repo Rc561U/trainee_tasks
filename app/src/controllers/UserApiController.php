@@ -2,7 +2,7 @@
 
 namespace Crud\Mvc\controllers;
 
-use Crud\Mvc\core\http\request\RequestInterface;
+use Crud\Mvc\core\AbstractController;
 use Crud\Mvc\core\http\response\ResponseInterface;
 use Crud\Mvc\core\traits\Validator;
 use Crud\Mvc\models\User;
@@ -135,6 +135,11 @@ class UserApiController extends AbstractController
             }
         }
         return $this->response;
+    }
+
+    public function getFiles()
+    {
+
     }
 
 

@@ -19,7 +19,6 @@ create_validation
                     })
 
                     .then(function (json) {
-                        console.log(json.available)
                         return json.available;
                     });
             },

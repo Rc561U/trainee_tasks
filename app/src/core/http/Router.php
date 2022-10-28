@@ -3,10 +3,12 @@
 namespace Crud\Mvc\core\http;
 
 
+use Crud\Mvc\controllers\UploadController;
 use Crud\Mvc\controllers\UserController;
 use Crud\Mvc\core\exception\RouterException;
 use Crud\Mvc\core\http\request\RequestCreator;
 use Crud\Mvc\core\http\request\RequestInterface;
+use Crud\Mvc\core\http\response\HtmlResponse;
 use Crud\Mvc\core\http\response\JsonResponse;
 use Crud\Mvc\core\http\response\ResponseInterface;
 use Crud\Mvc\core\http\response\ResponseProcessor;
@@ -24,7 +26,7 @@ class Router
     private string $currentController;
     private string $currentMethod;
     private string $currentAction;
-    private  $currentUserid;
+    private $currentUserid;
 
 
     public function __construct()
@@ -52,21 +54,25 @@ class Router
         $this->validateRouter();
         $controller = $this->getController($this->currentController);
         $control = explode("\\", $controller);
-//        echo end($control);
-        if (end($control) == "UserApiController"){
+        if (end($control) == "UserApiController") {
             $this->apiProcessor($controller);
-        } else {
+        } elseif (end($control) === "UserController" || end($control) === "MainController") {
             $this->htmlProcessor($controller);
+
+        } else {
+            $this->uploadProcessor($controller);
         }
 
     }
-    private function htmlProcessor($controller){
+
+    private function htmlProcessor($controller)
+    {
         $controllerClass = new $controller();
-        $action = $this->currentAction;
+        $action = $this->currentAction ?? "get"; // for homepage
         $this->getUserId();
         $method = $this->request->getMethod();
-        if ($method == "POST"){
-            $action = $action."Post";
+        if ($method == "POST") {
+            $action = $action . "Post";
             if (isset($this->currentUserid)) {
                 $id = $this->currentUserid;
                 $controllerClass->$action($id);
@@ -82,10 +88,19 @@ class Router
         }
 
     }
+    private function uploadProcessor($controller)
+    {
+        $response = $this->createResponseObject('html');
+        $controllerClass = new UploadController($this->request, $response);
+        $action = "upload";
+        $response = $controllerClass->$action();
+        $this->responseProcessor->process($response);
+    }
 
-    private function apiProcessor($controller){
+    private function apiProcessor($controller)
+    {
 
-        $response = $this->createResponseObject();
+        $response = $this->createResponseObject('json');
         $this->getApiUserId($this->currentMethod, $this->request->getUri());
         $controllerClass = new $controller($this->request, $response);
 
@@ -98,14 +113,15 @@ class Router
         $this->responseProcessor->process($response);
     }
 
-    private function createResponseObject(): ResponseInterface
+    private function createResponseObject($type): ResponseInterface
     {
-        return new JsonResponse();
+        return match ($type) {
+            'json' => new JsonResponse(),
+            'html' => new HtmlResponse(),
+        };
     }
 
-    /**
-     * @throws RouterException
-     */
+
     private function getController(string $currentController): string
     {
         return "\Crud\Mvc\controllers\\$currentController";
@@ -119,34 +135,41 @@ class Router
     public function validateRouter()
     {
         $currentUri = $this->request->getUri();
+
         $action = explode("?", $currentUri);
         $action = trim($action[0], '/');
         foreach ($this->routes as $router) {
+
             if ($router['uri'] == $currentUri && $router['method'] == $this->request->getMethod()) {
                 $this->currentController = $router['controller'];
                 $this->currentMethod = $router['method'];
                 return true;
 
-            } elseif (preg_match("/^api\/v1\/user\/[0-9]+$/", $currentUri) &&
-                $router['method'] == $this->request->getMethod())
-            {
+            } elseif ($this->validateUserApiUri($currentUri, $router['uri']) &&
+                $router['method'] == $this->request->getMethod()) {
                 $this->currentController = $router['controller'];
                 $this->currentMethod = $router['method'];
                 return true;
 
-            } elseif (method_exists(UserController::class, $action)){
-                $this->currentController = $router['controller'];
+            } elseif (method_exists(UserController::class, $action)) {
+                $this->currentController = "UserController"; //$router['controller'];
                 $this->currentMethod = $router['method'];
                 $this->currentAction = $action;
-            } else {
-                $error = new UserController();
-                $error->error();
-                exit();
+                return true;
             }
-
         }
-        return false;
-//        throw new RouterException('No controller for this route');
+
+//        $error = new UserController();
+//        $error->error();
+//        exit();
+
+//        return false;
+        throw new RouterException('No controller for this route');
+    }
+
+    private function validateUserApiUri($uri, $savedUri)
+    {
+        return preg_match("/^api\/v1\/user\/[0-9]+$/", $uri) && $savedUri == "api/v1/user/{id}";
     }
 
     private function getApiUserId($method, $uri)
@@ -159,16 +182,15 @@ class Router
             $this->currentUserid = null;
         }
     }
+
     private function getUserId()
     {
         $params = $this->request->getParams();
         $inputData = $this->request->getPost();
-        if (isset($params["id"]))
-        {
+        if (isset($params["id"])) {
             $this->currentUserid = $this->request->getParams()["id"];
         }
-        if (isset($inputData["id"]))
-        {
+        if (isset($inputData["id"])) {
             $this->currentUserid = $inputData["id"];
         }
     }

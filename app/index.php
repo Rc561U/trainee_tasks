@@ -14,17 +14,20 @@ $dotenv->load();
 //$test->start();
 
 $router = new Router();
+$router->setRoute("GET","","MainController");
 $router->setRoute("GET","api/v1/users","UserApiController");
-$router->setRoute("POST","api/v1/validate","UserApiController");
-//$router->setRoute("GET","api/v1/validate","UserApiController");
 $router->setRoute("GET","api/v1/user/{id}","UserApiController");
 $router->setRoute("PATCH","api/v1/user/{id}","UserApiController");
 $router->setRoute("DELETE","api/v1/user/{id}","UserApiController");
 $router->setRoute("POST","api/v1/user","UserApiController");
+$router->setRoute("POST","api/v1/validate","UserApiController");
+$router->setRoute("GET","api/v1/files","UserApiController");
 $router->setRoute("GET","read","UserController");
 $router->setRoute("GET","update","UserController");
 $router->setRoute("GET","create","UserController");
 $router->setRoute("GET","delete","UserController");
+$router->setRoute("GET","upload","UploadController");
+$router->setRoute("POST","upload","UploadController");
 
 
 $router->run();

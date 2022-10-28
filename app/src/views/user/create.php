@@ -52,9 +52,6 @@
                         <button type="submit" class="btn btn-primary mt-4">Submit</button>
                         <p>or view <a href="read">existing</a></p>
                     </div>
-
-
-
                 </form>
             </div>
 

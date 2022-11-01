@@ -1,6 +1,7 @@
 <?php
 
-namespace Crud\Mvc\core\http\request;;
+namespace Crud\Mvc\core\http\request;
+;
 
 class Request implements RequestInterface
 {
@@ -24,9 +25,10 @@ class Request implements RequestInterface
         ?string $method,
         ?string $authorization,
         ?string $contentType,
-        array $params,
-        array $post
-    ) {
+        array   $params,
+        array   $post
+    )
+    {
         $this->uri = $uri;
         $this->method = $method;
         $this->authorization = $authorization;

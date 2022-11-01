@@ -9,14 +9,15 @@
                     <div class="mb-3">
                         <label for="inputEmail" class="form-label">Email address</label>
                         <input type="email" class="form-control" id="email" name="email"
-                               value="<?= $result['email'] ?>" >
+                               value="<?= $result['email'] ?>">
 
                     </div>
 
                     <!-- First and last name -->
                     <div class="mb-3">
                         <label class="form-label">Your first and last name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="<?= $result['full_name'] ?>">
+                        <input type="text" class="form-control" id="name" name="name"
+                               value="<?= $result['full_name'] ?>">
                     </div>
 
                     <!-- Gender dropdown -->

@@ -2,6 +2,7 @@
 
 namespace Crud\Mvc\core\traits;
 
+use Crud\Mvc\models\File;
 use Crud\Mvc\models\User;
 
 trait Validator
@@ -14,6 +15,14 @@ trait Validator
         $this->checkName($name);
         $this->checkGender($gender);
         $this->checkStatus($status);
+        return $this->errors;
+    }
+
+    public function uploadValidate($db, $name, $size)
+    {
+        $this->checkUploadName($db, $name);
+        $this->checkUploadSize($size);
+        $this->checkUploadType($name);
         return $this->errors;
     }
 
@@ -56,11 +65,39 @@ trait Validator
         }
         return false;
     }
+
     public function getUserById($id)
     {
         $connectToModel = new User();
         return $connectToModel->getUserById($id);
     }
 
+
+    // uploads
+
+    private function checkUploadName(File $db, $name): void
+    {
+        $ns = $db->isFileNameExists($name);
+        if ($ns) {
+            $this->errors['status'] = 'File with this name already exists';
+        }
+    }
+
+    private function checkUploadSize($size): void
+    {
+
+        if ($size > 10485760) {
+            $this->errors['status'] = 'File is too large';
+        }
+    }
+
+    private function checkUploadType($name): void
+    {
+        $path_parts = pathinfo($name);
+        $allowedExt = ['jpg', 'txt', 'jpeg'];
+        if (!in_array($path_parts['extension'], $allowedExt)) {
+            $this->errors['status'] = 'Only JPG, JPEG and TXT files are allowed';
+        }
+    }
 
 }

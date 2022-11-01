@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         $this->database = new User();
         $this->request = new RequestCreator();
-        $this->request = $this->request ->create();
+        $this->request = $this->request->create();
     }
 
     public function read()
@@ -49,12 +49,10 @@ class UserController extends Controller
         $status = $inputData["status"] ?? null;
 
         $createValidation = $this->validate($email, $name, $gender, $status);
-        if (!count($createValidation))
-        {
+        if (!count($createValidation)) {
             $this->database->createUser($email, $name, $gender, $status);
             header("Location: read?create=New user successfully created!");
-        }
-        else{
+        } else {
             $this->validationError();
         }
     }

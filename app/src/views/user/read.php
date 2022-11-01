@@ -60,7 +60,7 @@
 
                                     <div class="modal-footer ">
                                         <a id="delete_link" href="" class="btn btn-danger">Delete</a>
-                                        <button type="button" id ="close" class="btn btn-secondary" >Cancel</button>
+                                        <button type="button" id="close" class="btn btn-secondary">Cancel</button>
                                     </div>
                                 </div>
                             </div>

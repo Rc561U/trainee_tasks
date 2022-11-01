@@ -2,7 +2,7 @@
 
 namespace Crud\Mvc\core\http\response;
 
-Abstract class AbstractResponse implements ResponseInterface
+abstract class AbstractResponse implements ResponseInterface
 {
     public const DEFAULT_PROTOCOL = 'HTTP/2';
 
@@ -90,13 +90,13 @@ Abstract class AbstractResponse implements ResponseInterface
         $this->code = $code;
     }
 
-    public function setBodyHtml(mixed $body): void
+    public function setBodyJson(mixed $body): void
     {
-        $this->renderBodyHtml = $body;
+        $this->renderBodyJson = $body;
     }
 
-    public function getBodyHtml()
+    public function getBodyJson()
     {
-        return $this->renderBodyHtml;
+        return $this->renderBodyJson;
     }
 }

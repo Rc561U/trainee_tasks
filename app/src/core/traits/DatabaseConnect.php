@@ -17,7 +17,7 @@ trait DatabaseConnect
 
             return $this->connect = new \PDO($dsn, $user, $password, $options);
         } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            echo 'Caught exception: ', $e->getMessage(), "\n";
         }
     }
 }

@@ -12,6 +12,7 @@
   ],
   "require": {
     "vlucas/phpdotenv": "^5.5",
-    "ext-exif": "*"
+    "ext-exif": "*",
+    "twig/twig": "^3.4"
   }
 }

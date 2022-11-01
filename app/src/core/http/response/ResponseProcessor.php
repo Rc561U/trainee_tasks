@@ -2,22 +2,29 @@
 
 namespace Crud\Mvc\core\http\response;
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
 class ResponseProcessor
 {
+    public object $twig;
+
     /**
      * @param ResponseInterface $response
      * @return void
      */
     public function process(ResponseInterface $response): void
     {
+        $loader = new FilesystemLoader('src/views/upload_templates');
+        $this->twig = new Environment($loader);
+
         $this->clearHeaders();
         $this->processHeaders($response->getHeaders());
         $this->setCode($response->getCode());
-        if ($response->getBody())
-        {
+        if ($response->getBody()) {
             $this->renderBody($response->getBody());
-        }else{
-            $this->renderBodyHtml($response->getBodyHtml());
+        } else {
+            $this->renderBodyJson($response->getBodyJson());
         }
     }
 
@@ -53,15 +60,17 @@ class ResponseProcessor
      * @param mixed $body
      * @return void
      */
-    protected function renderBody( mixed $body): void
+    protected function renderBody(mixed $body): void
     {
-        echo $body;
+        $template = $body['template'];
+        $data = $body['data'];
+        echo $this->twig->render($template, ['files' => $data]);
+//        echo $body;
+
     }
 
-    protected function renderBodyHtml( mixed $body): void
+    protected function renderBodyJson(mixed $body): void
     {
-        require_once "src/views/header.php";
-        require $body;
-        require_once "src/views/footer.php";
+        echo json_encode($body);
     }
 }

@@ -73,6 +73,7 @@ class RequestCreator implements RequestCreatorInterface
         }
         return $headers;
     }
+
     /**
      * @return string|null
      */
@@ -85,7 +86,6 @@ class RequestCreator implements RequestCreatorInterface
         }
         return null;
     }
-
 
 
     private function clearUri(string $uri): string

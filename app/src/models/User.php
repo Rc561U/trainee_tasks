@@ -18,6 +18,7 @@ class User extends Model
         return $this->database->lastInsertId();
 
     }
+
     public function createUser($email, $full_name, $gender, $status)
     {
         $query = $this->database->prepare("INSERT INTO  `test`.`users` (`email`,`full_name`,`gender`,`status`) VALUES (:email, :full_name, :gender, :status)");
@@ -100,7 +101,8 @@ class User extends Model
         return $sth->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function saveUploadFile($name,$size,$meta_data,$path,  $weight, $height, $created_date = null,){
+    public function saveUploadFile($name, $size, $meta_data, $path, $weight, $height, $created_date = null,)
+    {
         $query = $this->database->prepare("INSERT INTO  `test`.`uploads` (`name`,`size`,`mime`,`path`, `created_date`, `weight`, `height` ) VALUES (:name, :size,:mime,:path, :created_date, :weight, :height)");
         $query->execute([
             "name" => $name,
@@ -128,6 +130,7 @@ class User extends Model
             "arr" => $data
         ]);
     }
+
     public function getExample()
     {
         $result = $this->database->query('SELECT * FROM test.example');

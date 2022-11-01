@@ -28,7 +28,7 @@ class Model
         $DBH->setAttribute(\PDO::ATTR_ORACLE_NULLS, \PDO::NULL_NATURAL);
 
         $filename = $this->tablename;
-        $handle = fopen( $filename . '.sql', 'w');
+        $handle = fopen($filename . '.sql', 'w');
         $numtypes = array('tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'float', 'double', 'decimal', 'real');
 
 
@@ -41,7 +41,7 @@ class Model
         $pstm2 = $DBH->query("SHOW CREATE TABLE $table");
         $row2 = $pstm2->fetch(\PDO::FETCH_NUM);
         $ifnotexists = str_replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS', $row2[1]);
-        $return .=  $ifnotexists . ";\n\n";
+        $return .= $ifnotexists . ";\n\n";
 
         fwrite($handle, $return);
 
@@ -97,4 +97,5 @@ class Model
         fclose($handle);
 
     }
+
 }

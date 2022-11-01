@@ -14,9 +14,18 @@ update_validation
     ])
 
     .onSuccess((event) => {
-        form = document.getElementById("upload_form");
-        form.addEventListener("submit", function (evt) {
-            //... do something cool.
-            form.submit();
-        });
+        var form = document.getElementById("upload_form");
+        var formdata = new FormData(form);
+
+
+        fetch('test.php', {
+            method: 'POST',
+            body: formdata,
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+
+
+            })
     });

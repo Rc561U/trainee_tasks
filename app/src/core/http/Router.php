@@ -48,7 +48,7 @@ class Router
     /**
      * @throws RouterException
      */
-    private function mapRequest()
+    private function mapRequest(): void
     {
 
         $this->validateRouter();
@@ -65,7 +65,7 @@ class Router
 
     }
 
-    private function htmlProcessor($controller)
+    private function htmlProcessor($controller): void
     {
         $controllerClass = new $controller();
         $action = $this->currentAction ?? "get"; // for homepage
@@ -88,16 +88,17 @@ class Router
         }
 
     }
-    private function uploadProcessor($controller)
+
+    private function uploadProcessor($controller): void
     {
         $response = $this->createResponseObject('html');
         $controllerClass = new UploadController($this->request, $response);
-        $action = "upload";
+        $action = $this->request->getUri(); //"upload";
         $response = $controllerClass->$action();
         $this->responseProcessor->process($response);
     }
 
-    private function apiProcessor($controller)
+    private function apiProcessor($controller): void
     {
 
         $response = $this->createResponseObject('json');
@@ -132,7 +133,7 @@ class Router
         $this->routes[] = ["method" => $method, "uri" => $uri, "controller" => $controller];
     }
 
-    public function validateRouter()
+    public function validateRouter(): bool
     {
         $currentUri = $this->request->getUri();
 
@@ -159,20 +160,18 @@ class Router
             }
         }
 
-//        $error = new UserController();
-//        $error->error();
-//        exit();
-
-//        return false;
-        throw new RouterException('No controller for this route');
+        $error = new UserController();
+        $error->error();
+        exit();
+        //throw new RouterException('No controller for this route');
     }
 
-    private function validateUserApiUri($uri, $savedUri)
+    private function validateUserApiUri($uri, $savedUri): bool
     {
         return preg_match("/^api\/v1\/user\/[0-9]+$/", $uri) && $savedUri == "api/v1/user/{id}";
     }
 
-    private function getApiUserId($method, $uri)
+    private function getApiUserId($method, $uri): void
     {
         $splitedUri = explode('/', $uri);
         $this->currentAction = $method . ucfirst($splitedUri[2]);
@@ -183,7 +182,7 @@ class Router
         }
     }
 
-    private function getUserId()
+    private function getUserId(): void
     {
         $params = $this->request->getParams();
         $inputData = $this->request->getPost();

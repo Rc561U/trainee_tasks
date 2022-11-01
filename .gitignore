@@ -1,0 +1,4 @@
+.idea/
+/docker/volume
+app/composer.lock
+app/vendor

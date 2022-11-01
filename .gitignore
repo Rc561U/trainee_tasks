@@ -1,0 +1,5 @@
+.idea
+/docker/volume
+/app/vendor
+/app/log
+/app/uploads

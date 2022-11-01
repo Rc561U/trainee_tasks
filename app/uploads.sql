@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `uploads` (
     `id` int NOT NULL AUTO_INCREMENT,
     `name` varchar(100) NOT NULL,
     `size` int NOT NULL,
-    `mime` int NOT NULL,
+    `mime` varchar(30) NOT NULL,
     `path` varchar(120) NOT NULL,
     `created_date` int DEFAULT NULL,
     `height` int DEFAULT NULL,

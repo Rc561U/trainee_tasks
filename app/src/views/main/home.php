@@ -18,7 +18,7 @@
         <div class="sidebar-heading border-bottom bg-light">Trainee Tasks</div>
         <div class="list-group list-group-flush">
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="read">Task 13</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Task 14</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="api/v1/users">Task 14</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="upload">Task 15</a>
         </div>
     </div>

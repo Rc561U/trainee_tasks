@@ -18,7 +18,6 @@ use \Crud\Mvc\controllers\UserApiController;
 class Router
 {
 
-//    private RequestInterface $request;
     private ResponseProcessor $responseProcessor;
     private object $request;
     private array $routes;
@@ -26,7 +25,7 @@ class Router
     private string $currentController;
     private string $currentMethod;
     private string $currentAction;
-    private $currentUserid;
+    private mixed $currentUserid;
 
 
     public function __construct()
@@ -44,7 +43,6 @@ class Router
         $this->mapRequest();
     }
 
-
     /**
      * @throws RouterException
      */
@@ -58,9 +56,6 @@ class Router
             $this->apiProcessor($controller);
         } elseif (end($control) === "UserController" || end($control) === "MainController") {
             $this->htmlProcessor($controller);
-
-        } else {
-            $this->uploadProcessor($controller);
         }
 
     }
@@ -89,14 +84,6 @@ class Router
 
     }
 
-    private function uploadProcessor($controller): void
-    {
-        $response = $this->createResponseObject('html');
-        $controllerClass = new UploadController($this->request, $response);
-        $action = $this->request->getUri(); //"upload";
-        $response = $controllerClass->$action();
-        $this->responseProcessor->process($response);
-    }
 
     private function apiProcessor($controller): void
     {
@@ -140,10 +127,10 @@ class Router
         $action = explode("?", $currentUri);
         $action = trim($action[0], '/');
         foreach ($this->routes as $router) {
-
-            if ($router['uri'] == $currentUri && $router['method'] == $this->request->getMethod()) {
-                $this->currentController = $router['controller'];
+            if (method_exists(UserController::class, $action)) {
+                $this->currentController = "UserController"; //$router['controller'];
                 $this->currentMethod = $router['method'];
+                $this->currentAction = $action;
                 return true;
 
             } elseif ($this->validateUserApiUri($currentUri, $router['uri']) &&
@@ -152,10 +139,9 @@ class Router
                 $this->currentMethod = $router['method'];
                 return true;
 
-            } elseif (method_exists(UserController::class, $action)) {
-                $this->currentController = "UserController"; //$router['controller'];
+            } elseif ($router['uri'] == $currentUri && $router['method'] == $this->request->getMethod()) {
+                $this->currentController = $router['controller'];
                 $this->currentMethod = $router['method'];
-                $this->currentAction = $action;
                 return true;
             }
         }

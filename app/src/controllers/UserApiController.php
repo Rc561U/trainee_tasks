@@ -4,17 +4,13 @@ namespace Crud\Mvc\controllers;
 
 use Crud\Mvc\core\AbstractController;
 use Crud\Mvc\core\http\response\ResponseInterface;
-use Crud\Mvc\core\traits\FileInfo;
-use Crud\Mvc\core\traits\LogCreator;
+
 use Crud\Mvc\core\traits\Validator;
-use Crud\Mvc\models\File;
 use Crud\Mvc\models\User;
 
 class UserApiController extends AbstractController
 {
     use Validator;
-    use FileInfo;
-    use LogCreator;
 
     public object $database;
     private array $success;
@@ -136,74 +132,4 @@ class UserApiController extends AbstractController
         return $this->response;
     }
 
-    /////////////////////////// upload ///
-    public function getUploads(): ResponseInterface
-    {
-        $bd = new File();
-        $result = $bd->getUploads();
-        $this->response->setBodyJson($result);
-        return $this->response;
-    }
-
-    public function postUploads(): ResponseInterface
-    {
-
-        if ($this->isUploadFileValid()) {
-            $this->upload();
-            $this->success["response"] = "File successfully uploaded";
-            $this->response->setBodyJson($this->success);
-            $this->response->setCode(201);
-        }
-        return $this->response;
-    }
-
-    private function isUploadFileValid(): bool
-    {
-        $name = $_FILES["fileToUpload"]['name'];
-        $size = $_FILES["fileToUpload"]['size'];
-        $db = new File();
-        $validator = $this->uploadValidate($db, $name, $size);
-        if (count($validator)) {
-            $this->error["errors"] = $validator;
-            $this->response->setCode(400);
-            $this->response->setBodyJson($this->error);
-            $this->wh_log($this->logMsg($name, $size, $validator));
-            return false;
-        }
-        $this->wh_log($this->logMsg($name, $size, "INFO File was uploaded successfully"));
-        return true;
-
-    }
-
-    private function upload()
-    {
-        $this->createDir();
-
-        $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-
-
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-            $this->getinfo();
-            $this->database->saveUploadFile($this->name, $this->size, $this->mime, $this->path, $this->imageWeight, $this->imageHeight, $this->date_original);
-        }
-    }
-
-    private function createDir()
-    {
-        $root = $_SERVER["DOCUMENT_ROOT"];
-        $dir = $root . '/uploads/';
-//        if (!file_exists($dir)) {
-//        }
-        @mkdir($dir, 0755, true);   // sign (@) is Error Control Operators. I use it to suppress diagnostic errors
-    }
-
-    private function logMsg($name, $size, $status): string
-    {
-        $date = date('H:i:s d-m-Y');
-        if (is_array($status)) {
-            $status = "ERROR " . implode(",", $status);
-        }
-        return "$date $name $size $status";
-    }
 }

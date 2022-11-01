@@ -15,8 +15,7 @@ class ResponseProcessor
      */
     public function process(ResponseInterface $response): void
     {
-        $loader = new FilesystemLoader('src/views/upload_templates');
-        $this->twig = new Environment($loader);
+
 
         $this->clearHeaders();
         $this->processHeaders($response->getHeaders());
@@ -65,7 +64,6 @@ class ResponseProcessor
         $template = $body['template'];
         $data = $body['data'];
         echo $this->twig->render($template, ['files' => $data]);
-//        echo $body;
 
     }
 

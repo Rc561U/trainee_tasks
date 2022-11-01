@@ -28,13 +28,6 @@ $router->setRoute("DELETE", "api/v1/user/{id}", "UserApiController");
 $router->setRoute("POST", "api/v1/user", "UserApiController");
 $router->setRoute("POST", "api/v1/validate", "UserApiController");
 
-// Task 15
-$router->setRoute("GET", "upload", "UploadController");
-$router->setRoute("POST", "upload", "UploadController");
-$router->setRoute("GET", "api/v1/uploads", "UserApiController");
-$router->setRoute("POST", "api/v1/uploads", "UserApiController");
-$router->setRoute("GET", "api/v1/files", "UserApiController");
-
 $router->run();
 
 

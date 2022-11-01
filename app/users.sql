@@ -9,7 +9,5 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=latin1;
 
 INSERT INTO `users` (`user_id`, `email`, `full_name`, `gender`, `status`) VALUES
-	(152,'localhost@mail.nets','Jim Royal','Male','Active'),
-	(157,'ads@asd.lo','Jim Royal','Male','Inactive'),
-	(158,'localhost@mail.net','Jim Royal','Male','Active'),
-	(159,'st@mail.net','Name Surname','Male','Active');
+	(157,'new123@email.com','Royal Roy','Male','Active'),
+	(158,'localhost@mail.net','Jim Royal','Male','Active');

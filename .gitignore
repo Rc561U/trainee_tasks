@@ -1,3 +1,4 @@
 .idea/
 /docker/volume
-composer.lock
+app/composer.lock
+app/vendor

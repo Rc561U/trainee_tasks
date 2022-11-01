@@ -1,0 +1,18 @@
+{
+  "name": "crud/mvc",
+  "autoload": {
+    "psr-4": {
+      "Crud\\Mvc\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Anton Ramancou"
+    }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.5",
+    "ext-exif": "*",
+    "twig/twig": "^3.4"
+  }
+}

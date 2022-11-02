@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block title %}<title>Home</title>{% endblock %}
+{% block body %}
+    {% include '_navNew.html.twig' %}
+    <div class="container" id="container">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 ">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 ">
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                        id="menu">
+                        <li>
+                            <a href="read" class="nav-link px-0 ">
+                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Task 13</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="api/v1/users" class="nav-link px-0 ">
+                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Task 14</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="upload" class="nav-link px-0 ">
+                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Task 15</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="registration" class="nav-link px-0 ">
+                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Task 16</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="col py-3">
+                <h3>Home Page</h3>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

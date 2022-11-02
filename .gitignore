@@ -3,3 +3,4 @@
 /app/vendor
 /app/log
 /app/uploads
+/app/composer.lock

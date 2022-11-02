@@ -2,14 +2,29 @@
 
 namespace Crud\Mvc\controllers;
 
+use Crud\Mvc\core\AbstractController;
 use Crud\Mvc\core\Controller;
+use Crud\Mvc\models\Authentication;
 
-class MainController extends Controller
+class MainController extends AbstractController
 {
+    public function __construct($request, $response)
+    {
+        parent::__construct($request, $response);
+    }
+
     public function get()
     {
-//        require_once "src/views/header.php";
-        require_once "src/views/main/home.php";
-//        require_once "src/views/footer.php";
+        $result = null;
+        session_start();
+        if (!empty($_SESSION)){
+            $result = $_SESSION['session'];
+        }
+//        print_r($_SESSION);
+        $result = ['template' => 'home_templates/home.html.twig', 'data' => $result];
+        $this->response->setBody($result);
+        return $this->response;
     }
 }
+
+

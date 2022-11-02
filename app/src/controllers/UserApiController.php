@@ -115,6 +115,7 @@ class UserApiController extends AbstractController
 
     }
 
+    // validation update page with disabled JS
     public function postValidate(): ResponseInterface
     {
         $jsonRequest = ($this->request->getJsonRequest());
@@ -165,7 +166,6 @@ class UserApiController extends AbstractController
         $validator = $this->uploadValidate($db, $name, $size);
         if (count($validator)) {
             $this->error["errors"] = $validator;
-            $this->response->setCode(400);
             $this->response->setBodyJson($this->error);
             $this->wh_log($this->logMsg($name, $size, $validator));
             return false;
@@ -206,4 +206,6 @@ class UserApiController extends AbstractController
         }
         return "$date $name $size $status";
     }
+
+
 }

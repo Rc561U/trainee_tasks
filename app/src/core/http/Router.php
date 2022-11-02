@@ -33,17 +33,14 @@ class Router
     {
         $res = new RequestCreator();
         $this->request = $res->create();
-
         $this->responseProcessor = new ResponseProcessor();
 
     }
-
 
     public function run(): void
     {
         $this->mapRequest();
     }
-
 
     /**
      * @throws RouterException
@@ -56,13 +53,15 @@ class Router
         $control = explode("\\", $controller);
         if (end($control) == "UserApiController") {
             $this->apiProcessor($controller);
-        } elseif (end($control) === "UserController" || end($control) === "MainController") {
+        } elseif (end($control) === "UserController" ) {
             $this->htmlProcessor($controller);
-
-        } else {
-            $this->uploadProcessor($controller);
+        } elseif (end($control) === "UploadController"){
+            $this->MainProcessor($controller);
+        }elseif (end($control) === "AuthenticationController"){
+            $this->MainProcessor($controller);
+        } elseif (end($control) === "MainController"){
+            $this->MainProcessor($controller);
         }
-
     }
 
     private function htmlProcessor($controller): void
@@ -86,15 +85,19 @@ class Router
                 $controllerClass->$action();
             }
         }
-
     }
 
-    private function uploadProcessor($controller): void
+
+    private function MainProcessor($controller): void
     {
         $response = $this->createResponseObject('html');
-        $controllerClass = new UploadController($this->request, $response);
-        $action = $this->request->getUri(); //"upload";
-        $response = $controllerClass->$action();
+        $controllerClass = new $controller($this->request, $response);
+        $action = $this->request->getUri() ;
+        if ($action){
+            $response = $controllerClass->$action();
+        }else{
+            $response = $controllerClass->get(); // Main page
+        }
         $this->responseProcessor->process($response);
     }
 
@@ -141,9 +144,10 @@ class Router
         $action = trim($action[0], '/');
         foreach ($this->routes as $router) {
 
-            if ($router['uri'] == $currentUri && $router['method'] == $this->request->getMethod()) {
-                $this->currentController = $router['controller'];
+            if (method_exists(UserController::class, $action)) {
+                $this->currentController = "UserController"; //$router['controller'];
                 $this->currentMethod = $router['method'];
+                $this->currentAction = $action;
                 return true;
 
             } elseif ($this->validateUserApiUri($currentUri, $router['uri']) &&
@@ -152,10 +156,9 @@ class Router
                 $this->currentMethod = $router['method'];
                 return true;
 
-            } elseif (method_exists(UserController::class, $action)) {
-                $this->currentController = "UserController"; //$router['controller'];
+            } elseif ($router['uri'] == $currentUri && $router['method'] == $this->request->getMethod()) {
+                $this->currentController = $router['controller'];
                 $this->currentMethod = $router['method'];
-                $this->currentAction = $action;
                 return true;
             }
         }

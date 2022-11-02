@@ -4,6 +4,7 @@ namespace Crud\Mvc\core\traits;
 
 use Crud\Mvc\models\File;
 use Crud\Mvc\models\User;
+use Crud\Mvc\models\Authentication;
 
 trait Validator
 {
@@ -11,8 +12,9 @@ trait Validator
 
     public function validate($email, $name, $gender, $status, $id = null)
     {
-        $this->checkEmail($email);
-        $this->checkName($name);
+        $model = new User();
+        $this->checkEmail($email, $model );
+        $this->checkFullName($name);
         $this->checkGender($gender);
         $this->checkStatus($status);
         return $this->errors;
@@ -26,17 +28,28 @@ trait Validator
         return $this->errors;
     }
 
-    public function checkEmail($email)
+    public function authorizationValidate($email, $password, $name=null)
+    {
+        $model = new Authentication();
+        $this->checkEmail($email, $model);
+        $this->checkUserPassword($password);
+        if ($name){
+            $this->checkUsername($name);
+        }
+        return $this->errors;
+    }
+
+    public function checkEmail($email, $model)
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->errors['email'] = 'No valid email';
         }
-        if ($this->isEmailExist($email)) {
+        if ($this->isEmailExist($email, $model)) {
             $this->errors['email'] = 'Email already exists';
         }
     }
 
-    public function checkName($name)
+    public function checkFullName($name)
     {
         if (!preg_match("/^[\w]{2,}\ [\w]{2,}$/", $name)) {
             $this->errors['name'] = 'Name has unsupported type';
@@ -57,10 +70,9 @@ trait Validator
         }
     }
 
-    private function isEmailExist($email): bool
+    private function isEmailExist($email,$model): bool
     {
-        $connectToModel = new User();
-        if ($connectToModel->getEmail($email)) {
+        if ($model->getEmail($email)) {
             return true;
         }
         return false;
@@ -97,6 +109,23 @@ trait Validator
         $allowedExt = ['jpg', 'txt', 'jpeg'];
         if (!in_array($path_parts['extension'], $allowedExt)) {
             $this->errors['status'] = 'Only JPG, JPEG and TXT files are allowed';
+        }
+    }
+
+    // authentication
+
+    private function checkUsername($name)
+    {
+        if (!(3 <= strlen($name) && strlen($name) <= 20)) {
+            $this->errors['name'] = 'Name must be more then 3 and les then 20 char';
+        }
+    }
+
+    private function checkUserPassword($password)
+    {
+        $pattern = "/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{3,}$/";
+        if (!preg_match($pattern, $password)) {
+            $this->errors['password'] = 'Minimum 3 characters, at least one letter and one number';
         }
     }
 

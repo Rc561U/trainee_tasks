@@ -6,8 +6,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` varchar(10) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `unique_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=latin1;
 
 INSERT INTO `users` (`user_id`, `email`, `full_name`, `gender`, `status`) VALUES
 	(157,'new123@email.com','Royal Roy','Male','Active'),
-	(158,'localhost@mail.net','Jim Royal','Male','Active');
+	(158,'localhost@mail.net','Jim Royal','Male','Active'),
+	(160,'localhost@mail.netsd','Name Surname','Female','Inactive');

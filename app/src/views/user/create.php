@@ -1,4 +1,4 @@
-<div class="container ">
+<div class="container" id="container">
     <div class="box">
         <h3 class="display-4 text-center">Create</h3><br>
         <div id="status">

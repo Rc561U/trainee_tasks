@@ -24,7 +24,7 @@ class UploadController extends AbstractController
 
     public function __construct($request, $response)
     {
-        $loader = new FilesystemLoader('src/views/upload_templates');
+        $loader = new FilesystemLoader('src/views/twig_templates');
         $this->twig = new Environment($loader);
 
         parent::__construct($request, $response);
@@ -35,7 +35,7 @@ class UploadController extends AbstractController
     public function upload()
     {
         $allUploads = $this->database->getUploads();
-        $result = ['template' => 'upload.html.twig', "data" => $allUploads];
+        $result = ['template' => 'upload_templates/upload.html.twig', "data" => $allUploads];
         $this->response->setBody($result);
         return $this->response;
     }

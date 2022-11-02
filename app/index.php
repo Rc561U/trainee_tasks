@@ -35,6 +35,15 @@ $router->setRoute("GET", "api/v1/uploads", "UserApiController");
 $router->setRoute("POST", "api/v1/uploads", "UserApiController");
 $router->setRoute("GET", "api/v1/files", "UserApiController");
 
+
+// Task 16
+$router->setRoute("GET", "registration", "AuthenticationController");
+$router->setRoute("POST", "registration", "AuthenticationController");
+$router->setRoute("GET", "login", "AuthenticationController");
+$router->setRoute("POST", "login", "AuthenticationController");
+$router->setRoute("GET", "destroy", "AuthenticationController");
+
+
 $router->run();
 
 

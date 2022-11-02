@@ -1,4 +1,4 @@
-.container {
+#container {
     min-height: 80vh;
     display: flex;
     justify-content: center;
@@ -15,6 +15,10 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     font-size: 15px;
     color: black;
+}
+
+.star {
+    color: red;
 }
 
 /*popup*/
@@ -96,4 +100,8 @@ body {
 .modal-header {
 
     text-align: center !important;
+}
+
+.errorMsg {
+    color: #910707;
 }

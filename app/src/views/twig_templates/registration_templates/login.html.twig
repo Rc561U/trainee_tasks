@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block css %}<link rel="stylesheet" href="../../resources/css/style.css">{% endblock %}
+{% block title %}<title>Login</title>{% endblock %}
+{% block body %}
+{% include '_navNew.html.twig' %}
+
+    <div class="container" id="container">
+        <div class="box">
+            <h4 class="display-4 text-center">Login</h4><br>
+            <form id="login" method="post">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label mb-0">Email address<span class="star">*</span></label>
+                    <input type="email" class="form-control" value="{{ data.request.email }}" name="email" id="email" aria-describedby="emailHelp" required>
+                    {% if data.email is defined %}
+                        <div class="errorMsg" >
+                            {{ data.email }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="inputPassword5" class="form-label mb-0">Password<span class="star">*</span> </label>
+                    <input type="password" id="password" name="password" value="{{ data.request.password }}" class="form-control" aria-describedby="passwordHelpBlock" required>
+                    {% if data.password is defined %}
+                        <div class="errorMsg" >
+                            {{ data.password }}
+                        </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+{#{% block js %}<script src="/resources/js/login_validation.js" defer></script>{% endblock %}#}

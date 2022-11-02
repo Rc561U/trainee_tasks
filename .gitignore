@@ -3,4 +3,5 @@
 /app/vendor
 /app/log
 /app/uploads
+/.idea
 /app/composer.lock

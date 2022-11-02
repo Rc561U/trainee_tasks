@@ -24,15 +24,6 @@ interface RequestInterface
      */
     public function setMethod(string $method): void;
 
-    /**
-     * @return string|null
-     */
-    public function getAuthorization(): ?string;
-
-    /**
-     * @param string $authorization
-     */
-    public function setAuthorization(string $authorization): void;
 
     /**
      * @return string|null

@@ -20,7 +20,6 @@ class MainController extends AbstractController
         if (!empty($_SESSION)){
             $result = $_SESSION['session'];
         }
-//        print_r($_SESSION);
         $result = ['template' => 'home_templates/home.html.twig', 'data' => $result];
         $this->response->setBody($result);
         return $this->response;

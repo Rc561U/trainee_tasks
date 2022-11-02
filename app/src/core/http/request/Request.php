@@ -7,7 +7,6 @@ class Request implements RequestInterface
 {
     private ?string $uri;
     private ?string $method;
-    private ?string $authorization;
     private ?string $contentType;
     private array $params;
     private array $post;
@@ -15,7 +14,6 @@ class Request implements RequestInterface
     /**
      * @param string|null $uri
      * @param string|null $method
-     * @param string|null $authorization
      * @param string|null $contentType
      * @param array $params
      * @param array $post
@@ -23,7 +21,7 @@ class Request implements RequestInterface
     public function __construct(
         ?string $uri,
         ?string $method,
-        ?string $authorization,
+
         ?string $contentType,
         array   $params,
         array   $post
@@ -31,7 +29,6 @@ class Request implements RequestInterface
     {
         $this->uri = $uri;
         $this->method = $method;
-        $this->authorization = $authorization;
         $this->contentType = $contentType;
         $this->params = $params;
         $this->post = $post;
@@ -69,21 +66,6 @@ class Request implements RequestInterface
         $this->method = $method;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthorization(): string
-    {
-        return $this->authorization;
-    }
-
-    /**
-     * @param string $authorization
-     */
-    public function setAuthorization(string $authorization): void
-    {
-        $this->authorization = $authorization;
-    }
 
     /**
      * @return string

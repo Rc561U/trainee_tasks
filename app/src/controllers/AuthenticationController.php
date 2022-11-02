@@ -12,7 +12,6 @@ class AuthenticationController extends AbstractController
     use Validator;
 
     private Authentication $database;
-    private static string $currentPage;
 
     public function __construct($request, $response)
     {
@@ -48,7 +47,6 @@ class AuthenticationController extends AbstractController
             if (array_key_exists("session",  $resultMsg)){
                 $resultMsg['session'] = $_SESSION['session'];
             }
-//            echo json_encode($resultMsg);
             if (array_key_exists("success",  $resultMsg))
             {
                 $this->response->setHeaders(["Location: /"]);
@@ -69,10 +67,10 @@ class AuthenticationController extends AbstractController
             return $this->response;
         }
     }
-    // session
-    public function destroy(){
-//        session_start();
 
+    // session
+    public function destroy()
+    {
         session_destroy();
         $result = ['template' => 'home_templates/home.html.twig', 'data' => null];
         $this->response->setBody($result);
@@ -145,7 +143,7 @@ class AuthenticationController extends AbstractController
         $result = $this->database->getUserDataByEmail($email);
         if ($result)
         {
-            return $result; //[$result['email'],$result['name'],$result['password']];
+            return $result;
         }
     }
 
@@ -157,24 +155,14 @@ class AuthenticationController extends AbstractController
 
         $resultMessage = $this->UserLoginValidation($email, $password);
         $resultMessage["request"] = ['email' => $email, 'password' => $password];
-//        print_r($resultMessage);
-        if ($resultMessage['email'] === 'Email already exists') {
+        if (key_exists('email',$resultMessage)) {
             $resultMessage['email'] = '';
             $checkEmail = $this->checkIfUserExists($email);
             if ($checkEmail){
                 $checkPassword = $this->comparePassword($password,$checkEmail['password']);
                 if ($checkPassword){
                     $resultMessage['success'] = true;
-                    if(!isset($_SESSION))
-                    {
-                        session_start();
-                    }
-                    else
-                    {
-                        session_destroy();
-                        session_start();
-                        $_SESSION['session'] = ['username' => $checkEmail['name']];
-                    }
+                    $this->startSession($checkEmail['name']);
                     return $resultMessage;
                 }
                 $resultMessage["password"] =  "Password is not correct!";
@@ -184,5 +172,19 @@ class AuthenticationController extends AbstractController
         }
         $resultMessage["email"] = "User with this email is not exists!";
         return $resultMessage;
+    }
+
+    private function startSession($name)
+    {
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        else
+        {
+            session_destroy();
+            session_start();
+            $_SESSION['session'] = ['username' => $name];
+        }
     }
 }

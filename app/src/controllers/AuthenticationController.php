@@ -17,7 +17,6 @@ class AuthenticationController extends AbstractController
     {
         parent::__construct($request, $response);
         $this->database = new Authentication();
-        session_start();
     }
 
     public function registration()

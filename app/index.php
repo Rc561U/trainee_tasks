@@ -1,6 +1,8 @@
 <?php
 
 require 'vendor/autoload.php';
+session_start();
+
 
 use \Crud\Mvc\core\App;
 use Crud\Mvc\core\http\request\RequestCreator;

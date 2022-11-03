@@ -1,4 +1,4 @@
-.idea
+.idea/
 /docker/volume
 /app/vendor
 /app/log

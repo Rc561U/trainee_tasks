@@ -16,7 +16,6 @@ class MainController extends AbstractController
     public function get()
     {
         $result = null;
-        session_start();
         if (!empty($_SESSION)){
             $result = $_SESSION['session'];
         }

@@ -2,7 +2,7 @@
 
 namespace Crud\Mvc\core\traits;
 
-use Exception;
+use DateTime;
 
 trait FileInfo
 {
@@ -26,7 +26,7 @@ trait FileInfo
             $this->exif_headers = exif_read_data($this->path);
             $size = getimagesize($this->path);
             if (array_key_exists('DateTimeOriginal', $this->exif_headers)) {
-                $d = new \DateTime($this->exif_headers["DateTimeOriginal"]);
+                $d = new DateTime($this->exif_headers["DateTimeOriginal"]);
                 $this->date_original = $d->getTimestamp();
             }
             if (getimagesize($this->path)) {

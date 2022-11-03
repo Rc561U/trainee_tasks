@@ -1,17 +1,22 @@
 <?php
+
 namespace Crud\Mvc\controllers;
 
 use Crud\Mvc\core\AbstractController;
-use Crud\Mvc\core\http\request\RequestCreator;
 use Crud\Mvc\core\traits\Validator;
 use Crud\Mvc\models\Authentication;
-use Crud\Mvc\models\User;
 
 class AuthenticationController extends AbstractController
 {
     use Validator;
 
     private Authentication $database;
+    private string $email;
+    private ?string $first_name;
+    private ?string $last_name;
+    private string $password;
+    private ?string $email_check;
+    private ?string $password_check;
 
     public function __construct($request, $response)
     {
@@ -29,7 +34,7 @@ class AuthenticationController extends AbstractController
         }
         if ($this->request->getMethod() == "GET") {
             $result = null;
-            if (!empty($_SESSION)){
+            if (!empty($_SESSION)) {
                 $result = $_SESSION['session'];
             }
 
@@ -39,18 +44,31 @@ class AuthenticationController extends AbstractController
         }
     }
 
+    private function save()
+    {
+        $this->getPostData();
+        $resultMessage["errors"] = $this->validateSignUp($this->email, $this->email_check, $this->first_name, $this->last_name, $this->password, $this->password_check);
+        if (empty($resultMessage['errors'])) {
+            $passwordHash = $this->convertPassword($this->password);
+            $this->database->saveUser($this->email, $this->first_name, $this->last_name, $passwordHash);
+            return ["success" => "New User successfully created"];
+        }
+        $resultMessage["request"] = ['email' => $this->email, 'first_name' => $this->first_name, 'last_name' => $this->last_name, 'password' => $this->password];
+        return $resultMessage;
+    }
+
+
     public function login()
     {
         if ($this->request->getMethod() == "POST") {
             $resultMsg = $this->enter();
-            if (array_key_exists("session",  $resultMsg)){
+            if (array_key_exists("session", $resultMsg)) {
                 $resultMsg['session'] = $_SESSION['session'];
             }
-            if (array_key_exists("success",  $resultMsg))
-            {
+            if (array_key_exists("success", $resultMsg)) {
                 $this->response->setHeaders(["Location: /"]);
                 $result = ['template' => 'home_templates/home.html.twig', 'data' => $resultMsg];
-            }else{
+            } else {
                 $result = ['template' => 'registration_templates/login.html.twig', 'data' => $resultMsg];
             }
             $this->response->setBody($result);
@@ -58,13 +76,28 @@ class AuthenticationController extends AbstractController
         }
         if ($this->request->getMethod() == "GET") {
             $result = null;
-            if (!empty($_SESSION)){
+            if (!empty($_SESSION)) {
                 $result = $_SESSION['session'];
             }
             $result = ['template' => 'registration_templates/login.html.twig', 'data' => $result];
             $this->response->setBody($result);
             return $this->response;
         }
+    }
+
+    private function enter(): array
+    {
+        $this->getPostData();
+        $resultMessage = $this->validateSignIn($this->email, $this->password);
+        $userCheck = $this->checkIfUserExists($this->email);
+        $resultMessage["request"] = ['email' => $this->email];
+        if ($userCheck && $this->comparePassword($this->password, $userCheck["password"])) {
+            $resultMessage['success'] = true;
+            $this->startSession($userCheck['first_name']);
+        } else {
+            $resultMessage["password"] = "Password is not correct";
+        }
+        return $resultMessage;
     }
 
     // session
@@ -76,20 +109,15 @@ class AuthenticationController extends AbstractController
         return $this->response;
     }
 
-    private function save()
+    private function startSession($name)
     {
-        $request = $this->getPostData();
-        $email = $request['email'];
-        $name = $request['name'];
-        $password = $request['password'];
-        $resultMessage = $this->UserSignInValidation($email, $name, $password);
-        if (!$resultMessage) {
-            $passwordHash = $this->convertPassword($password);
-            $this->database->saveUser($email, $name, $passwordHash);
-            return ["success" => "New User successfully created"];
+        if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            session_destroy();
+            session_start();
+            $_SESSION['session'] = ['username' => $name];
         }
-        $resultMessage["request"] = ['email' => $email, 'name' => $name, 'password' => $password ];
-        return $resultMessage;
     }
 
 
@@ -99,30 +127,9 @@ class AuthenticationController extends AbstractController
     }
 
 
-    private function UserSignInValidation($email, $name, $password)
+    private function comparePassword($EnteredPassword, $DbPassword)
     {
-        $validator = $this->authorizationValidate($email, $password, $name);
-        if (count($validator)) {
-            $this->userRequestResult["status"] = $validator;
-            return $validator;
-        }
-        return false;
-    }
-
-    /// 2.11.login
-    private function UserLoginValidation($email, $password)
-    {
-        $validator = $this->authorizationValidate($email, $password);
-        if (count($validator)) {
-            $this->userRequestResult["status"] = $validator;
-            return $validator;
-        }
-        return false;
-    }
-
-    private function comparePassword($EnteredPassword,$DbPassword)
-    {
-        if (password_verify($EnteredPassword,$DbPassword)) {
+        if (password_verify($EnteredPassword, $DbPassword)) {
             return true;
         }
         return false;
@@ -131,59 +138,19 @@ class AuthenticationController extends AbstractController
     private function getPostData()
     {
         $request = $this->request->getPost();
-        $email = $request['email'];
-        $name = $request['name'] ?? null;
-        $password = $request['password'];
-        return ['email' => $email, "name" => $name, 'password' => $password];
+        $this->email = $request['email'];
+        $this->email_check = $request['email_check'] ?? null;
+        $this->first_name = $request['last_name'] ?? null;
+        $this->last_name = $request['first_name'] ?? null;
+        $this->password = $request['password'];
+        $this->password_check = $request['password_check'] ?? null;
     }
 
     private function checkIfUserExists($email)
     {
         $result = $this->database->getUserDataByEmail($email);
-        if ($result)
-        {
+        if ($result) {
             return $result;
-        }
-    }
-
-    private function enter()
-    {
-        $request = $this->getPostData();
-        $email = $request['email'];
-        $password = $request['password'];
-
-        $resultMessage = $this->UserLoginValidation($email, $password);
-        $resultMessage["request"] = ['email' => $email, 'password' => $password];
-        if (key_exists('email',$resultMessage)) {
-            $resultMessage['email'] = '';
-            $checkEmail = $this->checkIfUserExists($email);
-            if ($checkEmail){
-                $checkPassword = $this->comparePassword($password,$checkEmail['password']);
-                if ($checkPassword){
-                    $resultMessage['success'] = true;
-                    $this->startSession($checkEmail['name']);
-                    return $resultMessage;
-                }
-                $resultMessage["password"] =  "Password is not correct!";
-                return $resultMessage;
-            }
-            return $resultMessage;
-        }
-        $resultMessage["email"] = "User with this email is not exists!";
-        return $resultMessage;
-    }
-
-    private function startSession($name)
-    {
-        if(!isset($_SESSION))
-        {
-            session_start();
-        }
-        else
-        {
-            session_destroy();
-            session_start();
-            $_SESSION['session'] = ['username' => $name];
         }
     }
 }

@@ -7,6 +7,7 @@ use Crud\Mvc\core\http\response\ResponseInterface;
 use Crud\Mvc\core\traits\FileInfo;
 use Crud\Mvc\core\traits\LogCreator;
 use Crud\Mvc\core\traits\Validator;
+use Crud\Mvc\models\Authentication;
 use Crud\Mvc\models\File;
 use Crud\Mvc\models\User;
 
@@ -119,13 +120,20 @@ class UserApiController extends AbstractController
     public function postValidate(): ResponseInterface
     {
         $jsonRequest = ($this->request->getJsonRequest());
-        if (!isset($jsonRequest["user_id"])) {
+        if (isset($jsonRequest['signup'])) {
+            $authenticationModel = new Authentication();
+            if ($authenticationModel->getEmail($jsonRequest["email"])) {
+                $this->response->setBodyJson(["available" => false]);
+            } else {
+                $this->response->setBodyJson(["available" => true]);
+            }
+        } elseif (!isset($jsonRequest["user_id"])) {
             if ($this->database->getEmail($jsonRequest["email"])) {
                 $this->response->setBodyJson(["available" => false]);
             } else {
                 $this->response->setBodyJson(["available" => true]);
             }
-        } else {
+        } elseif (isset($jsonRequest["user_id"])) {
             $oldEmail = $this->database->getEmailById($jsonRequest["user_id"]);
             $newEmail = $jsonRequest["email"];
             if ($oldEmail === $newEmail || !$this->database->getEmail($newEmail)) {

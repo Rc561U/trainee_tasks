@@ -47,7 +47,6 @@ class RequestCreator implements RequestCreatorInterface
     }
 
 
-
     private function clearUri(string $uri): string
     {
         $uri = preg_replace('(/$)', '', $uri);

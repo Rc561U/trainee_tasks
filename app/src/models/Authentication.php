@@ -3,34 +3,43 @@
 namespace Crud\Mvc\models;
 
 use Crud\Mvc\core\Model;
+use Exception;
+use PDO;
 
 class Authentication extends Model
 {
 
-    public function saveUser($email, $name, $password){
-        $query = $this->database->prepare(
-            "INSERT INTO  `test`.`authentication` (`email`,`name`,`password`) 
-                    VALUES (:email, :name, :password)");
-        $query->execute([
-            "email" => $email,
-            "name" => $name,
-            "password" => $password,
-        ]);
+    public function saveUser($email, $first_name, $last_name, $password)
+    {
+        try {
+            $query = $this->database->prepare(
+                "INSERT INTO  `test`.`authentication` (`email`,`first_name`, `last_name`, `password`) 
+                    VALUES (:email, :first_name, :last_name, :password)");
+            $query->execute([
+                "email" => $email,
+                "first_name" => $first_name,
+                "last_name" => $last_name,
+                "password" => $password,
+            ]);
+            return $query;
+        } catch (Exception $e) {
+            return false;
+        }
 
-        return $query;
     }
 
-    public function getEmail($email){
+    public function getEmail($email)
+    {
         $sth = $this->database->prepare('SELECT `email` FROM `authentication` WHERE `email` = ?');
         $sth->execute([$email]);
-        return $sth->fetch(\PDO::FETCH_ASSOC)['email'] ?? false;
+        return $sth->fetch(PDO::FETCH_ASSOC)['email'] ?? false;
     }
 
     public function getUserDataByEmail($email)
     {
         $sth = $this->database->prepare('SELECT * FROM `authentication` WHERE `email` = ?');
         $sth->execute([$email]);
-        return $sth->fetch(\PDO::FETCH_ASSOC);
+        return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
 

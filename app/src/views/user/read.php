@@ -36,7 +36,7 @@
                 <?php
                 $i = 0;
 
-                while ($rows = $result->fetch(\PDO::FETCH_ASSOC)) {
+                while ($rows = $result->fetch(PDO::FETCH_ASSOC)) {
                     $i++;
                     ?>
                     <tr>

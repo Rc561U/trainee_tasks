@@ -1,7 +1,6 @@
 <?php
 
 namespace Crud\Mvc\core\http\request;
-;
 
 class Request implements RequestInterface
 {

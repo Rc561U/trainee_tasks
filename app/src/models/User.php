@@ -3,6 +3,7 @@
 namespace Crud\Mvc\models;
 
 use Crud\Mvc\core\Model;
+use PDO;
 
 class User extends Model
 {
@@ -38,7 +39,7 @@ class User extends Model
         $sql = 'DELETE FROM users WHERE user_id = :user_id';
 
         $statement = $this->database->prepare($sql);
-        $statement->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         return $statement->execute();
     }
 
@@ -46,7 +47,7 @@ class User extends Model
     {
         $sth = $this->database->prepare('SELECT * FROM `users` WHERE user_id = ?');
         $sth->execute([$id]);
-        return $sth->fetch(\PDO::FETCH_ASSOC);
+        return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -65,7 +66,7 @@ class User extends Model
     public function readUserApi()
     {
         $result = $this->database->query('SELECT * FROM test.users');
-        return $result->fetchAll(\PDO::FETCH_ASSOC);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function readUser()
@@ -77,28 +78,28 @@ class User extends Model
     {
         $sth = $this->database->prepare('SELECT `email` FROM `users` WHERE user_id = ?');
         $sth->execute([$id]);
-        return $sth->fetch(\PDO::FETCH_ASSOC)['email'] ?? false;
+        return $sth->fetch(PDO::FETCH_ASSOC)['email'] ?? false;
     }
 
     public function getEmail($email)
     {
         $sth = $this->database->prepare('SELECT `email` FROM `users` WHERE `email` = ?');
         $sth->execute([$email]);
-        return $sth->fetch(\PDO::FETCH_ASSOC)['email'] ?? false;
+        return $sth->fetch(PDO::FETCH_ASSOC)['email'] ?? false;
     }
 
     public function getUserById($id)
     {
         $sth = $this->database->prepare('SELECT * FROM `users` WHERE user_id = ?');
         $sth->execute([$id]);
-        return $sth->fetch(\PDO::FETCH_ASSOC) ?? false;
+        return $sth->fetch(PDO::FETCH_ASSOC) ?? false;
     }
 
     public function isEmailExists($id)
     {
         $sth = $this->database->prepare('SELECT `email` FROM `users` WHERE user_id = ?');
         $sth->execute([$id]);
-        return $sth->fetch(\PDO::FETCH_ASSOC);
+        return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
     public function saveUploadFile($name, $size, $meta_data, $path, $weight, $height, $created_date = null,)
@@ -120,7 +121,7 @@ class User extends Model
     public function getUploads()
     {
         $result = $this->database->query('SELECT * FROM test.uploads');
-        return $result->fetchAll(\PDO::FETCH_ASSOC);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function setExample($data)
@@ -134,7 +135,7 @@ class User extends Model
     public function getExample()
     {
         $result = $this->database->query('SELECT * FROM test.example');
-        return $result->fetchAll(\PDO::FETCH_ASSOC);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 

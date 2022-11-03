@@ -3,11 +3,9 @@
 namespace Crud\Mvc\controllers;
 
 use Crud\Mvc\core\AbstractController;
-use Crud\Mvc\core\http\response\ResponseInterface;
 use Crud\Mvc\core\traits\FileInfo;
 use Crud\Mvc\core\traits\Validator;
 use Crud\Mvc\models\User;
-
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 

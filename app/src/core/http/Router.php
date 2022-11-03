@@ -3,17 +3,13 @@
 namespace Crud\Mvc\core\http;
 
 
-use Crud\Mvc\controllers\UploadController;
 use Crud\Mvc\controllers\UserController;
 use Crud\Mvc\core\exception\RouterException;
 use Crud\Mvc\core\http\request\RequestCreator;
-use Crud\Mvc\core\http\request\RequestInterface;
 use Crud\Mvc\core\http\response\HtmlResponse;
 use Crud\Mvc\core\http\response\JsonResponse;
 use Crud\Mvc\core\http\response\ResponseInterface;
 use Crud\Mvc\core\http\response\ResponseProcessor;
-
-use \Crud\Mvc\controllers\UserApiController;
 
 class Router
 {
@@ -53,13 +49,13 @@ class Router
         $control = explode("\\", $controller);
         if (end($control) == "UserApiController") {
             $this->apiProcessor($controller);
-        } elseif (end($control) === "UserController" ) {
+        } elseif (end($control) === "UserController") {
             $this->htmlProcessor($controller);
-        } elseif (end($control) === "UploadController"){
+        } elseif (end($control) === "UploadController") {
             $this->MainProcessor($controller);
-        }elseif (end($control) === "AuthenticationController"){
+        } elseif (end($control) === "AuthenticationController") {
             $this->MainProcessor($controller);
-        } elseif (end($control) === "MainController"){
+        } elseif (end($control) === "MainController") {
             $this->MainProcessor($controller);
         }
     }
@@ -92,10 +88,10 @@ class Router
     {
         $response = $this->createResponseObject('html');
         $controllerClass = new $controller($this->request, $response);
-        $action = $this->request->getUri() ;
-        if ($action){
+        $action = $this->request->getUri();
+        if ($action) {
             $response = $controllerClass->$action();
-        }else{
+        } else {
             $response = $controllerClass->get(); // Main page
         }
         $this->responseProcessor->process($response);

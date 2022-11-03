@@ -3,6 +3,7 @@
 namespace Crud\Mvc\models;
 
 use Crud\Mvc\core\Model;
+use PDO;
 
 class File extends Model
 {
@@ -25,13 +26,13 @@ class File extends Model
     public function getUploads()
     {
         $result = $this->database->query('SELECT * FROM test.uploads');
-        return $result->fetchAll(\PDO::FETCH_ASSOC);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function isFileNameExists($name)
     {
         $sth = $this->database->prepare('SELECT `name` FROM `uploads` WHERE `name` = ?');
         $sth->execute([$name]);
-        return $sth->fetch(\PDO::FETCH_ASSOC)['name'] ?? false;
+        return $sth->fetch(PDO::FETCH_ASSOC)['name'] ?? false;
     }
 }

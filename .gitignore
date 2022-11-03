@@ -1,4 +1,5 @@
 .idea/
+composer.lock/
 /docker/volume
 /app/vendor
 /app/log

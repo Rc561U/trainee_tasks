@@ -2,6 +2,8 @@
 
 namespace Crud\Mvc\core\traits;
 
+use PDO;
+
 trait DatabaseConnect
 {
     public function connect()
@@ -13,9 +15,9 @@ trait DatabaseConnect
 
         $dsn = "mysql:host=$host;dbname=$db;charset=UTF8";
         try {
-            $options = [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION];
+            $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
 
-            return $this->connect = new \PDO($dsn, $user, $password, $options);
+            return $this->connect = new PDO($dsn, $user, $password, $options);
         } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
         }

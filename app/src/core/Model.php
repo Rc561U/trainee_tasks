@@ -5,6 +5,7 @@ namespace Crud\Mvc\core;
 
 use App\Exceptions\DbException;
 use Crud\Mvc\core\traits\DatabaseConnect;
+use PDO;
 
 class Model
 {
@@ -25,7 +26,7 @@ class Model
     {
         $table = $this->tablename;
         $DBH = $this->database;
-        $DBH->setAttribute(\PDO::ATTR_ORACLE_NULLS, \PDO::NULL_NATURAL);
+        $DBH->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_NATURAL);
 
         $filename = $this->tablename;
         $handle = fopen($filename . '.sql', 'w');
@@ -39,7 +40,7 @@ class Model
 
         // write table structure
         $pstm2 = $DBH->query("SHOW CREATE TABLE $table");
-        $row2 = $pstm2->fetch(\PDO::FETCH_NUM);
+        $row2 = $pstm2->fetch(PDO::FETCH_NUM);
         $ifnotexists = str_replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS', $row2[1]);
         $return .= $ifnotexists . ";\n\n";
 
@@ -51,7 +52,7 @@ class Model
             $pstm3 = $DBH->query("SHOW COLUMNS FROM $table");
             $count = 0;
             $type = array();
-            while ($rows = $pstm3->fetch(\PDO::FETCH_NUM)) {
+            while ($rows = $pstm3->fetch(PDO::FETCH_NUM)) {
 
                 if (stripos($rows[1], '(')) {
                     $type[$table][] = stristr($rows[1], '(', true);
@@ -68,7 +69,7 @@ class Model
 
         }
         $count = 0;
-        while ($row = $result->fetch(\PDO::FETCH_NUM)) {
+        while ($row = $result->fetch(PDO::FETCH_NUM)) {
             $return = "\n\t(";
 
             for ($j = 0; $j < $num_fields; $j++) {

@@ -4,7 +4,6 @@ namespace Crud\Mvc\core\traits;
 
 use Crud\Mvc\models\File;
 use Crud\Mvc\models\User;
-use Crud\Mvc\models\Authentication;
 
 trait Validator
 {
@@ -13,7 +12,7 @@ trait Validator
     public function validate($email, $name, $gender, $status, $id = null)
     {
         $model = new User();
-        $this->checkEmail($email, $model );
+        $this->checkEmail($email, $model);
         $this->checkFullName($name);
         $this->checkGender($gender);
         $this->checkStatus($status);
@@ -28,28 +27,39 @@ trait Validator
         return $this->errors;
     }
 
-    public function authorizationValidate($email, $password, $name=null)
+    public function validateSignUp($email, $email_check, $first_name, $last_name, $password, $password_check)
     {
-        $model = new Authentication();
-        $this->checkEmail($email, $model);
+        $this->checkEmail($email);
         $this->checkUserPassword($password);
-        if ($name){
-            $this->checkUsername($name);
-        }
+        $this->checkUsername($first_name, "first_name");
+        $this->checkUsername($last_name, "last_name");
+        $this->matchEmail($email, $email_check);
+        $this->matchPassword($password, $password_check);
+
         return $this->errors;
     }
 
-    public function checkEmail($email, $model)
+    public function validateSignIn($email, $password)
     {
+        $this->checkEmail($email, true);
+        $this->checkUserPassword($password);
+        return $this->errors;
+    }
+
+    public function checkEmail($email, $flag = false): void
+    {
+        if ($flag && !$this->isEmailExist($email)) {
+            $this->errors['email'] = 'User with this email is not exists';
+        }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->errors['email'] = 'No valid email';
         }
-        if ($this->isEmailExist($email, $model)) {
+        if ($this->isEmailExist($email) && !$flag) {
             $this->errors['email'] = 'Email already exists';
         }
     }
 
-    public function checkFullName($name)
+    public function checkFullName($name): void
     {
         if (!preg_match("/^[\w]{2,}\ [\w]{2,}$/", $name)) {
             $this->errors['name'] = 'Name has unsupported type';
@@ -70,9 +80,9 @@ trait Validator
         }
     }
 
-    private function isEmailExist($email,$model): bool
+    private function isEmailExist($email)
     {
-        if ($model->getEmail($email)) {
+        if ($this->database->getEmail($email)) {
             return true;
         }
         return false;
@@ -114,10 +124,15 @@ trait Validator
 
     // authentication
 
-    private function checkUsername($name)
+    private function checkUsername($name, $key = null)
     {
-        if (!(3 <= strlen($name) && strlen($name) <= 20)) {
-            $this->errors['name'] = 'Name must be more then 3 and les then 20 char';
+        $pattern1 = "/^[a-zA-Z]*$/";
+        $pattern2 = "/^[a-zA-Z]{3,20}$/";
+        if (!preg_match($pattern2, $name)) {
+            $this->errors[$key] = 'The name must have more than 3 and less than 20 letters.';
+        }
+        if (!preg_match($pattern1, $name)) {
+            $this->errors[$key] = 'Only letters allowed.';
         }
     }
 
@@ -125,8 +140,21 @@ trait Validator
     {
         $pattern = "/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{3,}$/";
         if (!preg_match($pattern, $password)) {
-            $this->errors['password'] = 'Minimum 3 characters, at least one letter and one number';
+            $this->errors['password'] = 'Minimum 6 characters, at least one number, one upper and lower case letter';
         }
     }
 
+    private function matchEmail($email, $email_check)
+    {
+        if (!($email == $email_check)) {
+            $this->errors['email_check'] = "Email does not match";
+        }
+    }
+
+    private function matchPassword($password, $password_check)
+    {
+        if (!($password == $password_check)) {
+            $this->errors['password_check'] = "Password does not match";
+        }
+    }
 }

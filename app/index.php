@@ -4,10 +4,7 @@ require 'vendor/autoload.php';
 session_start();
 
 
-use \Crud\Mvc\core\App;
-use Crud\Mvc\core\http\request\RequestCreator;
-use \Crud\Mvc\controllers\UserApiController;
-use \Crud\Mvc\core\http\Router;
+use Crud\Mvc\core\http\Router;
 
 // load env
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -38,7 +35,7 @@ $router->setRoute("POST", "api/v1/uploads", "UserApiController");
 $router->setRoute("GET", "api/v1/files", "UserApiController");
 
 
-// Task 16
+// Task 16-17
 $router->setRoute("GET", "registration", "AuthenticationController");
 $router->setRoute("POST", "registration", "AuthenticationController");
 $router->setRoute("GET", "login", "AuthenticationController");
@@ -47,5 +44,4 @@ $router->setRoute("GET", "destroy", "AuthenticationController");
 
 
 $router->run();
-
 

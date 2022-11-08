@@ -2,47 +2,54 @@
 
 require 'vendor/autoload.php';
 
-session_start();
+use Crud\Mvc\online_store\Application;
+use Crud\Mvc\online_store\products\CellPhone;
+use Crud\Mvc\online_store\products\Fridge;
+use Crud\Mvc\online_store\products\Laptop;
+use Crud\Mvc\online_store\products\Tv;
+
+$product1 = new CellPhone('nokia', 'finland', '20/04/2022', 500);
+$product2 = new CellPhone('samsung', 'south korea', '01/05/2021', 1000);
+$product3 = new Fridge('Aston', 'Germany', '31/01/2024', 5000);
+$product4 = new Fridge('LG', 'South korea', '01/05/2022', 3210);
+$product5 = new Laptop('HP', 'China', '13/01/2022', 3200);
+$product6 = new Laptop('Acer', 'China', '02/01/2022', 2900);
+$product7 = new Tv('Samsung', 'South korea', '02/01/2022', 3333);
+$product8 = new Tv('LG', 'South korea', '18/09/2012', 4433);
+
+$app = new Application();
+
+$app->addNewProduct($product1);
+$app->addNewProduct($product2);
+$app->addNewProduct($product3);
+$app->addNewProduct($product4);
+$app->addNewProduct($product5);
+$app->addNewProduct($product6);
+$app->addNewProduct($product7);
+$app->addNewProduct($product8);
+
+$app->setConfiguration("12/02/2023", 320);
+$app->setDelivery("21/04/2023", 123);
+$app->setWarranty("11/12/2025", 400);
+$app->setInstallation("15/01/2022", 1200);
+
+//// show catalog
+$app->showCatalog();
+
+//// show available services
+$app->showAllServices();
+
+//// add product into user cart
+$app->addProductInUserCart($product1); // add product without service and advise to select appropriate service
+$app->addProductInUserCart($product4, "Delivery");
+$app->addServiceToProduct($product4, "Warranty");
 
 
-use Crud\Mvc\core\http\Router;
+//// show user cart
+$app->showUserCart();
 
-// load env
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+//// show if the service exists
+//$app->showService("Warranty");
 
-$router = new Router();
-
-// Task 13
-$router->setRoute("GET", "read", "UserController");
-$router->setRoute("GET", "update", "UserController");
-$router->setRoute("GET", "create", "UserController");
-$router->setRoute("GET", "delete", "UserController");
-
-// Task 14
-$router->setRoute("GET", "", "MainController");
-$router->setRoute("GET", "api/v1/users", "UserApiController");
-$router->setRoute("GET", "api/v1/user/{id}", "UserApiController");
-$router->setRoute("PATCH", "api/v1/user/{id}", "UserApiController");
-$router->setRoute("DELETE", "api/v1/user/{id}", "UserApiController");
-$router->setRoute("POST", "api/v1/user", "UserApiController");
-$router->setRoute("POST", "api/v1/validate", "UserApiController");
-
-// Task 15
-$router->setRoute("GET", "upload", "UploadController");
-$router->setRoute("POST", "upload", "UploadController");
-$router->setRoute("GET", "api/v1/uploads", "UserApiController");
-$router->setRoute("POST", "api/v1/uploads", "UserApiController");
-$router->setRoute("GET", "api/v1/files", "UserApiController");
-
-
-// Task 16-17
-$router->setRoute("GET", "registration", "AuthenticationController");
-$router->setRoute("POST", "registration", "AuthenticationController");
-$router->setRoute("GET", "login", "AuthenticationController");
-$router->setRoute("POST", "login", "AuthenticationController");
-$router->setRoute("GET", "destroy", "AuthenticationController");
-
-
-$router->run();
-
+//// show any product
+//echo $product3;

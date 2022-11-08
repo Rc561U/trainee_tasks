@@ -43,4 +43,14 @@ interface ResponseInterface
      * @param int $code
      */
     public function setCode(int $code): void;
+
+    /**
+     * @param mixed $cookie
+     */
+    public function setCookie(mixed $cookie);
+
+    /**
+     * @return mixed
+     */
+    public function getCookie(): mixed;
 }

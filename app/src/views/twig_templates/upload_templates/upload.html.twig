@@ -47,9 +47,12 @@
         <div class="box">
             <h4 class="display-4 text-center">Uploads files</h4><br>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Upload new file
-            </button>
+            {% if data.access is defined and data.access %}
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Upload new file
+                </button>
+            {% endif %}
+
 
             <table class="table table-striped">
                 <thead>

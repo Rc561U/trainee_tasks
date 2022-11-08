@@ -10,20 +10,22 @@ abstract class AbstractResponse implements ResponseInterface
     protected ?string $protocol;
     protected mixed $body;
     protected int $code;
-    protected mixed $renderBodyHtml;
+    protected mixed $cookie;
 
     /**
      * @param array $headers
      * @param string|null $protocol
      * @param mixed $body
      * @param int $code
+     * @param mixed $cookie
      */
-    public function __construct(array $headers, ?string $protocol, mixed $body, int $code = 200)
+    public function __construct(array $headers, ?string $protocol, mixed $body, mixed $cookie, int $code = 200 )
     {
         $this->headers = $headers;
         $this->protocol = $protocol;
         $this->body = $body;
         $this->code = $code;
+        $this->cookie = $cookie;
     }
 
     /**
@@ -88,6 +90,19 @@ abstract class AbstractResponse implements ResponseInterface
     public function setCode(int $code): void
     {
         $this->code = $code;
+    }
+
+    public function getCookie(): mixed
+    {
+        return $this->cookie;
+    }
+
+    /**
+     * @param int $cookie
+     */
+    public function setCookie(mixed $cookie)
+    {
+        $this->cookie = $cookie;
     }
 
     public function setBodyJson(mixed $body): void

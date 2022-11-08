@@ -3,6 +3,7 @@
 namespace Crud\Mvc\core\http;
 
 
+use Crud\Mvc\controllers\BlockUserController;
 use Crud\Mvc\controllers\UserController;
 use Crud\Mvc\core\exception\RouterException;
 use Crud\Mvc\core\http\request\RequestCreator;
@@ -35,7 +36,12 @@ class Router
 
     public function run(): void
     {
+        if (@$_SESSION['visit_counter'] >= 3){
+            $this->blockUser();
+        }
+//        print_r($_SESSION['visit_counter']);
         $this->mapRequest();
+
     }
 
     /**
@@ -192,6 +198,37 @@ class Router
             $this->currentUserid = $inputData["id"];
         }
     }
+    private function getUserIP()
+    {
+        //check ip from share internet
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))
+        {
+            $ip=$_SERVER['HTTP_CLIENT_IP'];
+        }
+        //to check ip is pass from proxy
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+        {
+            $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        else
+        {
+            $ip=$_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+
+    private function blockUser(){
+        $response = $this->createResponseObject('html');
+        $cont = new BlockUserController($this->request, $response);
+        if ($_SESSION['visit_counter'] >= 3 && @!$_SESSION['banned']){
+            $cont->saveBannedUser();
+        }
+        $cont->banUser();
+
+        $this->responseProcessor->process($response);
+        exit();
+    }
+
 
 
 }

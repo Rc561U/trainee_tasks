@@ -32,7 +32,13 @@ class UploadController extends AbstractController
 
     public function upload()
     {
+
         $allUploads = $this->database->getUploads();
+        if($this->isAuthoritize()){
+            $allUploads['username'] = $this->payload['name'];
+            $allUploads['access'] = true;
+        }
+
         $result = ['template' => 'upload_templates/upload.html.twig', "data" => $allUploads];
         $this->response->setBody($result);
         return $this->response;

@@ -11,7 +11,8 @@ class HtmlResponse extends AbstractResponse
         $this->protocol = self::DEFAULT_PROTOCOL;
         $this->body = null;
         $this->code = 200;
-        parent::__construct($this->headers, $this->protocol, $this->body, $this->code);
+        $this->cookie = null;
+        parent::__construct($this->headers, $this->protocol, $this->body, $this->cookie, $this->code );
     }
 
     /**
@@ -20,5 +21,12 @@ class HtmlResponse extends AbstractResponse
     public function setBody(mixed $body): void
     {
         $this->body = $body;
+    }
+    /**
+     * @param mixed $cookie
+     */
+    public function setCookie(mixed $cookie): void
+    {
+        $this->cookie = $cookie;
     }
 }

@@ -15,12 +15,16 @@ class ResponseProcessor
      */
     public function process(ResponseInterface $response): void
     {
+
         $loader = new FilesystemLoader('src/views/twig_templates');
         $this->twig = new Environment($loader);
 
         $this->clearHeaders();
         $this->processHeaders($response->getHeaders());
         $this->setCode($response->getCode());
+        if (!empty($response->getCookie())) {
+            $this->setCookie($response->getCookie());
+        }
         if ($response->getBody()) {
             $this->renderBody($response->getBody());
         } else {
@@ -65,8 +69,11 @@ class ResponseProcessor
         $template = $body['template'];
         $data = $body['data'];
         echo $this->twig->render($template, ['data' => $data]);
-//        echo $body;
+    }
 
+    protected function setCookie($cookie): void
+    {
+        setcookie($cookie["name"], $cookie["token"], $cookie["expire"]);
     }
 
     protected function renderBodyJson(mixed $body): void

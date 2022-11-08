@@ -11,3 +11,11 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 RUN docker-php-ext-install exif
 
+RUN apt-get install libcurl4-gnutls-dev
+
+# OAuth
+RUN apt-get install -y libpcre3-dev && pecl install oauth \
+    && echo "extension=oauth.so" > /usr/local/etc/php/conf.d/docker-php-ext-oauth.ini
+
+
+

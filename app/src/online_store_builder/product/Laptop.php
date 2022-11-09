@@ -1,35 +1,18 @@
 <?php
 
-namespace Crud\Mvc\online_store_builder\core;
+namespace Crud\Mvc\online_store_builder\product;
 
+use Crud\Mvc\online_store_builder\core\product\AbstractProduct;
 use Crud\Mvc\online_store_builder\core\product\ProductInterface;
 use Crud\Mvc\online_store_builder\core\service\ServiceInterface;
 
-/**
- *
- */
-abstract class AbstractProduct implements ProductInterface
+class Laptop extends AbstractProduct implements ProductInterface
 {
     protected string $name;
     protected string $manufactures;
     protected string $release;
     protected int $cost;
     protected array $services;
-
-    /**
-     * @param $name
-     * @param $manufactures
-     * @param $release
-     * @param $cost
-     */
-    public function __construct($name, $manufactures, $release, $cost)
-    {
-        $this->name = $name;
-        $this->manufactures = $manufactures;
-        $this->release = $release;
-        $this->cost = $cost;
-        $this->services = [];
-    }
 
     /**
      * @param ServiceInterface $service
@@ -60,25 +43,6 @@ abstract class AbstractProduct implements ProductInterface
         return $servicesCost;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        $className = explode("\\",get_class($this));
-        $className = end($className);
-        if ($this->services){
-            $services = implode(', ', $this->services);
-        }else{
-            $services = "Not defined";
-        }
-        return "Product type: $className<br>
-                Product name: $this->name<br>
-                Manufactured: $this->manufactures<br>
-                Release: $this->release<br>
-                Cost: $this->cost$<br>
-                Services: $services<br>";
-    }
 
     /**
      * @param string $name
@@ -147,5 +111,4 @@ abstract class AbstractProduct implements ProductInterface
     {
         return $this->cost;
     }
-
 }

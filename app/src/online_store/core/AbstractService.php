@@ -1,11 +1,11 @@
 <?php
 
-namespace Crud\Mvc\online_store\core;
+namespace Crud\Mvc\online_store_builder\core;
 
-use Crud\Mvc\online_store\services\Configuration;
-use Crud\Mvc\online_store\services\Delivery;
-use Crud\Mvc\online_store\services\Installation;
-use Crud\Mvc\online_store\services\Warranty;
+use Crud\Mvc\online_store_builder\services\Configuration;
+use Crud\Mvc\online_store_builder\services\Delivery;
+use Crud\Mvc\online_store_builder\services\Installation;
+use Crud\Mvc\online_store_builder\services\Warranty;
 
 abstract class AbstractService
 {

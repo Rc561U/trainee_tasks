@@ -1,6 +1,6 @@
 <?php
 
-namespace Crud\Mvc\online_store_builder\core;
+namespace Crud\Mvc\online_store_builder\core\product;
 
 use Crud\Mvc\online_store_builder\core\service\ServiceInterface;
 

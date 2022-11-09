@@ -1,34 +1,34 @@
 <?php
 
-namespace Crud\Mvc\online_store;
+namespace Crud\Mvc\online_store_builder;
 
+use Crud\Mvc\online_store_builder\core\product\ProductBuilder;
 use Crud\Mvc\online_store_builder\core\product\ProductInterface;
 
 class Application extends Services
 {
 
-    /**
-     * @var array
-     */
     protected array $userCart;
-    /**
-     * @var array
-     */
     protected array $catalog;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
-     * @param ProductInterface $product
+     * @param string $class
+     * @param array $value
      * @return void
      */
-    public function addNewProduct(ProductInterface $product): void
+    public function addNewProduct(string $class, array $value): void
     {
+        list($name,$manufactures,$release,$cost) = $value;
+        $builder = new ProductBuilder($class);
+        $product = $builder->setName($name)
+            ->setManufactures($manufactures)
+            ->setReleaseDate($release)
+            ->setCost($cost)
+            ->getProduct();
         $this->catalog[] = $product;
     }
+
+
 
     /**
      * @return void
@@ -41,7 +41,7 @@ class Application extends Services
         foreach ($this->catalog as $product) {
             $i++;
             echo "<hr>Product number: $i<br>";
-            echo $product;
+            print_r( $product);
             echo "<br>";
         }
     }
@@ -105,36 +105,15 @@ class Application extends Services
         return $cost;
     }
 
-    /**
-     * @param $service
-     * @return void
-     */
-    public function showService($service): void
+    public function showProduct(int $int): string | ProductInterface
     {
-        $name = ucfirst($service);
-        if (in_array($name, $this->services) && isset($this->userCart)) {
-            $service = trim(strtolower($service));
-            echo "Service - " . ucfirst($service) . "<br>";
-            echo "Deadline: " . $this->$service->getDeadline() . "<br>";
-            echo "Cost: " . $this->$service->getCost() . "<br>";
-        } else {
-            echo "Service '$service' is not exists or your cart is empty!";
+        if (!array_key_exists($int-1,$this->catalog))
+        {
+            return "Product not found";
         }
+            return $this->catalog[$int-1];
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param $service
-     * @return void
-     */
-    public function addServiceToProduct(ProductInterface $product, $service):void
-    {
-        $service = ucfirst($service);
-        $serviceLow = trim(strtolower($service));
-        if (in_array($service, $this->services) && in_array($product,$this->userCart)){
-            $product->setService($this->$serviceLow);
-        }else{
-            echo "<br>The service or product does not exist!";
-        }
-    }
+
+
 }

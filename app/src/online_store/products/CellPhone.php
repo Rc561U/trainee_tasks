@@ -1,8 +1,8 @@
 <?php
 
-namespace Crud\Mvc\online_store\products;
+namespace Crud\Mvc\online_store_builder\products;
 
-use Crud\Mvc\online_store\core\AbstractProduct;
+use Crud\Mvc\online_store_builder\core\product\AbstractProduct;
 
 class CellPhone extends AbstractProduct
 {

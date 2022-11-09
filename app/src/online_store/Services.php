@@ -2,7 +2,7 @@
 
 namespace Crud\Mvc\online_store;
 
-use Crud\Mvc\online_store\core\AbstractService;
+use Crud\Mvc\online_store_builder\core\service\AbstractService;
 
 class Services extends AbstractService
 {

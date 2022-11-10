@@ -1,6 +1,8 @@
 <?php
 
-namespace Crud\Mvc\online_store\core;
+namespace Crud\Mvc\online_store_factory\core\products;
+
+use Crud\Mvc\online_store_factory\core\services\ServiceInterface;
 
 /**
  *
@@ -19,8 +21,9 @@ abstract class AbstractProduct implements ProductInterface
      * @param $release
      * @param $cost
      */
-    public function __construct($name, $manufactures, $release, $cost)
+    public function __construct($values)
     {
+        list($name, $manufactures, $release, $cost) = $values;
         $this->name = $name;
         $this->manufactures = $manufactures;
         $this->release = $release;

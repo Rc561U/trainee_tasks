@@ -1,6 +1,8 @@
 <?php
 
-namespace Crud\Mvc\online_store\core;
+namespace Crud\Mvc\online_store_factory\core\products;
+
+use Crud\Mvc\online_store_factory\core\services\ServiceInterface;
 
 interface ProductInterface
 {

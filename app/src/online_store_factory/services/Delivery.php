@@ -1,27 +1,14 @@
 <?php
 
-namespace Crud\Mvc\online_store\services;
+namespace Crud\Mvc\online_store_factory\services;
 
-use Crud\Mvc\online_store\core\ServiceInterface;
+use Crud\Mvc\online_store_factory\core\services\AbstractService;
+use Crud\Mvc\online_store_factory\core\services\ServiceInterface;
 
-class Installation implements ServiceInterface
+class Delivery extends AbstractService implements ServiceInterface
 {
-    /**
-     * @var string
-     */
     public string $deadline;
-    /**
-     * @var int
-     */
     public int $cost;
-
-
-    public function __toString(): string
-    {
-        $classPath = explode("\\",get_class($this));
-        return end($classPath);
-    }
-
 
     /**
      * @param string $deadline

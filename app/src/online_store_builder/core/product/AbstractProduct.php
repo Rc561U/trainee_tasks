@@ -42,20 +42,6 @@ abstract class AbstractProduct
                 Services: $services<br>";
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param $service
-     * @return void
-     */
-    public function addServiceToProduct(ProductInterface $product, $service):void
-    {
-        $service = ucfirst($service);
-        $serviceLow = trim(strtolower($service));
-        if (in_array($service, $this->services) && in_array($product,$this->userCart)){
-            $product->setService($this->$serviceLow);
-        }else{
-            echo "<br>The service or product does not exist!";
-        }
-    }
+
 
 }

@@ -37,8 +37,10 @@ class Laptop extends AbstractProduct implements ProductInterface
     public function getServicesCost(): int
     {
         $servicesCost = 0;
-        foreach ($this->services as $service){
-            $servicesCost += $service->getCost();
+        if(!empty($this->services)){
+            foreach ($this->services as $service){
+                $servicesCost += $service->getCost();
+            }
         }
         return $servicesCost;
     }

@@ -22,20 +22,19 @@ $app->addNewService("Configuration", ["12/02/2023", 987]);
 //$app->showCatalog();
 
 ////// show available services
-//$app->showAllServices();
 //echo $app->showProduct(4);
 ////// add product into user cart
-$app->addProductInUserCart($app->showProduct(4)); // add product without service and advise to select appropriate service
-$app->addProductInUserCart($app->showProduct(2)); // add product without service and advise to select appropriate service
-//$app->addProductInUserCart($product4, "Delivery");
-//$app->addServiceToProduct($product4, "Warranty");
-//
-//
+
+
+$app->addProductInUserCart(1);
+$app->addProductInUserCart(2, 'Warranty');
+
 ////// show user cart
 $app->showUserCart();
 
 //// show if the service exists
 //$app->showService("Warranty");
+$app->showAllServices();
 
 //// show any product
-//echo $product3;
+//echo $app->getProduct(2);

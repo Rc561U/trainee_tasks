@@ -10,12 +10,12 @@ use Crud\Mvc\online_store_builder\services\Warranty;
 abstract class AbstractService
 {
 
-
     public function __toString(): string
     {
         $classPath = explode("\\", get_class($this));
         return end($classPath);
     }
 
+    abstract public function getServicesCost(): int;
 
 }

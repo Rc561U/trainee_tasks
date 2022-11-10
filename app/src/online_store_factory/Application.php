@@ -16,8 +16,9 @@ class Application extends Services
      * @param $class
      * @param $values
      * @return void
+     * It's factory
      */
-    public function addNewProduct($class, $values)
+    public function addNewProduct($class, $values):void
     {
         $path = $this->productsPath;
         if (class_exists($path . $class)) {
@@ -69,24 +70,21 @@ class Application extends Services
      */
     public function addProductInUserCart($productId, $serviceName = null)
     {
-        if (isset($serviceName) && $this->getProduct($productId)) {
+        $product = $this->getProductById($productId,$this->catalog);
+        $CloneProductToCart = clone $product;
+        if (isset($serviceName) && $product) {
             foreach ($this->services as $service) {
-                $class = explode('\\', get_class($service)); ///// replace
-                $class = end($class);
+                $class = $this->getClassBasename($service);
                 if (ucfirst($class) === ucfirst($serviceName)) {
-                    $product = $this->getProduct($productId);
-                    $product->setService($service);
-                    $this->userCart[] = $product;
+                    $CloneProductToCart->setService($service);
+                    $this->userCart[] = $CloneProductToCart;
                 }
             }
-        } elseif ($this->getProduct($productId)) {
-            $this->userCart[] = $this->getProduct($productId);
-        } else {
-            die("Product or service not found!");
+        } elseif ($this->getProductById($productId,$this->catalog)) {
+            $this->userCart[] = $CloneProductToCart;
         }
 
     }
-
 
 
     /**
@@ -96,11 +94,11 @@ class Application extends Services
      */
     public function addServiceToProduct(int $productId, string $service): void
     {
-        $product = $this->getProduct($productId);
+        $this->getIdProductError($productId, $this->userCart);
+        $product = $this->getProductById($productId,$this->userCart);
         $productServices = $product->getService();
         $path = $this->servicesPath;
         $definedServices = $this->services;
-
         if (class_exists($path . $service)) {
             foreach ($definedServices as $definedService) {
                 $definedServiceName = $definedService->getServiceName();
@@ -118,7 +116,7 @@ class Application extends Services
      */
     public function showProduct(int $int): void
     {
-        $product = $this->getProduct($int);
+        $product = $this->getProductById($int,$this->catalog);
         echo "<h1>Product:</h1><br>";
         if ($product) {
             echo $product;
@@ -159,16 +157,19 @@ class Application extends Services
     }
 
 
-    /**
-     * @param int $int
-     * @return string|ProductInterface
-     */
-    private function getProduct(int $int): string|ProductInterface
+    private function getProductById(int $int, $arr): bool|ProductInterface
     {
-        if (!array_key_exists($int - 1, $this->catalog)) {
+        if (!array_key_exists($int - 1, $arr)) {
             return false;
         }
-        return $this->catalog[$int - 1];
+        return $arr[$int - 1];
+    }
+
+    private function getIdProductError(int $int, $arr)
+    {
+        if(!$this->getProductById($int,$arr)){
+            die("Product or service is not exists");
+        }
     }
 }
 

@@ -16,10 +16,7 @@ abstract class AbstractProduct implements ProductInterface
     protected array $services;
 
     /**
-     * @param $name
-     * @param $manufactures
-     * @param $release
-     * @param $cost
+     * @param $values
      */
     public function __construct($values)
     {

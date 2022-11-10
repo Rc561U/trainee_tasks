@@ -32,13 +32,13 @@ $app->showAllServices();
 
 ////// add products into user cart
 $app->addProductInUserCart(1); // add products without service and advise to select appropriate service
-$app->addProductInUserCart(2, "Delivery");
-$app->addServiceToProduct(2, "Delivery");
-$app->showProduct(1);
+$app->addProductInUserCart(2);
+
+$app->showProduct(2);
 
 //// add service to existed product
 $app->addServiceToProduct(1, "Configuration");
-$app->addServiceToProduct(1, "Warranty");
+$app->addServiceToProduct(2, "Warranty");
 
 ////// show user cart
 $app->showUserCart();
@@ -46,3 +46,5 @@ $app->showUserCart();
 ////// show if the service exists
 $app->showService("Warranty");
 //// show info about product
+
+$app->showCatalog();

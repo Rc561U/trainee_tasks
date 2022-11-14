@@ -8,22 +8,22 @@ interface ServiceInterface
      * @param string $deadline
      * @return void
      */
-    public function setDeadline(string $deadline):void;
+    public function setDeadline(string $deadline): void;
 
     /**
      * @return string
      */
-    public function getDeadline():string;
+    public function getDeadline(): string;
 
     /**
      * @param int $cost
      * @return void
      */
-    public function setCost(int $cost):void;
+    public function setCost(int $cost): void;
 
     /**
      * @return int
      */
-    public function getCost():int;
+    public function getCost(): int;
 
 }

@@ -2,11 +2,6 @@
 
 namespace Crud\Mvc\online_store_factory\core\services;
 
-use Crud\Mvc\online_store_factory\services\Configuration;
-use Crud\Mvc\online_store_factory\services\Delivery;
-use Crud\Mvc\online_store_factory\services\Installation;
-use Crud\Mvc\online_store_factory\services\Warranty;
-
 abstract class AbstractService
 {
     protected string $deadline;
@@ -26,15 +21,15 @@ abstract class AbstractService
         return $this->prepareStrToReturn();
     }
 
-    public function getServiceName()
-    {
-        return $this->prepareStrToReturn();
-    }
-
     private function prepareStrToReturn()
     {
         $classPath = explode("\\", get_class($this));
         return end($classPath);
+    }
+
+    public function getServiceName()
+    {
+        return $this->prepareStrToReturn();
     }
 
 

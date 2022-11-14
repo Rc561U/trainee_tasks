@@ -25,7 +25,7 @@ $app->addService("Warranty", ["12/02/2023", 320]);
 $app->addService("Installation", ["12/02/2023", 320]);
 
 ////// show catalog
-$app->showCatalog();
+//$app->showCatalog();
 
 ////// show available services
 $app->showAllServices();

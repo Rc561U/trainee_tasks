@@ -51,10 +51,27 @@ abstract class AbstractProduct implements ProductInterface
     public function getServicesCost(): int
     {
         $servicesCost = 0;
-        foreach ($this->services as $service){
+        foreach ($this->services as $service) {
             $servicesCost += $service->getCost();
         }
         return $servicesCost;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCost(): ?int
+    {
+        return $this->cost;
+    }
+
+    /**
+     * @param int $cost
+     * @return void
+     */
+    public function setCost(int $cost): void
+    {
+        $this->cost = $cost;
     }
 
     /**
@@ -62,11 +79,11 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function __toString(): string
     {
-        $className = explode("\\",get_class($this));
+        $className = explode("\\", get_class($this));
         $className = end($className);
-        if ($this->services){
+        if ($this->services) {
             $services = implode(', ', $this->services);
-        }else{
+        } else {
             $services = "Not defined";
         }
         return "Product type: $className<br>
@@ -78,20 +95,20 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
      * @param string $name
      * @return void
      */
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
     }
 
     /**
@@ -112,15 +129,6 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
-     * @param string $manufactures
-     * @return void
-     */
-    public function setManufactures(string $manufactures): void
-    {
-        $this->manufactures = $manufactures;
-    }
-
-    /**
      * @return string|null
      */
     public function getManufactures(): ?string
@@ -129,20 +137,12 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
-     * @param int $cost
+     * @param string $manufactures
      * @return void
      */
-    public function setCost(int $cost): void
+    public function setManufactures(string $manufactures): void
     {
-        $this->cost = $cost;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getCost(): ?int
-    {
-        return $this->cost;
+        $this->manufactures = $manufactures;
     }
 
 }

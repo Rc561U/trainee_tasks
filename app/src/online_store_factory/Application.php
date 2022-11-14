@@ -3,6 +3,7 @@
 namespace Crud\Mvc\online_store_factory;
 
 use Crud\Mvc\online_store_factory\core\products\ProductInterface;
+use Crud\Mvc\online_store_factory\core\products\StaticProductFactory;
 
 class Application extends Services
 {
@@ -16,17 +17,11 @@ class Application extends Services
      * @param $class
      * @param $values
      * @return void
-     * It's factory
+     * @throws \Exception
      */
-    public function addNewProduct($class, $values):void
+    public function addNewProduct($class, $values): void
     {
-        $path = $this->productsPath;
-        if (class_exists($path . $class)) {
-            $class = $path . $class;
-            $this->catalog[] = new $class($values);
-        } else {
-            echo "Class $class is  not exist";
-        }
+        $this->catalog[] = StaticProductFactory::build($class, $values);
     }
 
     /**
@@ -64,13 +59,26 @@ class Application extends Services
     }
 
     /**
+     * @return int
+     */
+    private function totalUserCartCost(): int
+    {
+        $cost = 0;
+        foreach ($this->userCart as $product) {
+            $cost += $product->getCost();
+            $cost += $product->getServicesCost();
+        }
+        return $cost;
+    }
+
+    /**
      * @param $productId
      * @param null $serviceName
      * @return void
      */
-    public function addProductInUserCart($productId, $serviceName = null)
+    public function addProductInUserCart($productId, $serviceName = null): void
     {
-        $product = $this->getProductById($productId,$this->catalog);
+        $product = $this->getProductById($productId, $this->catalog);
         $CloneProductToCart = clone $product;
         if (isset($serviceName) && $product) {
             foreach ($this->services as $service) {
@@ -80,12 +88,19 @@ class Application extends Services
                     $this->userCart[] = $CloneProductToCart;
                 }
             }
-        } elseif ($this->getProductById($productId,$this->catalog)) {
+        } elseif ($this->getProductById($productId, $this->catalog)) {
             $this->userCart[] = $CloneProductToCart;
         }
 
     }
 
+    private function getProductById(int $int, $arr): bool|ProductInterface
+    {
+        if (!array_key_exists($int - 1, $arr)) {
+            return false;
+        }
+        return $arr[$int - 1];
+    }
 
     /**
      * @param int $productId
@@ -95,7 +110,7 @@ class Application extends Services
     public function addServiceToProduct(int $productId, string $service): void
     {
         $this->getIdProductError($productId, $this->userCart);
-        $product = $this->getProductById($productId,$this->userCart);
+        $product = $this->getProductById($productId, $this->userCart);
         $productServices = $product->getService();
         $path = $this->servicesPath;
         $definedServices = $this->services;
@@ -109,6 +124,12 @@ class Application extends Services
         }
     }
 
+    private function getIdProductError(int $int, $arr)
+    {
+        if (!$this->getProductById($int, $arr)) {
+            die("Product or service is not exists");
+        }
+    }
 
     /**
      * @param int $int
@@ -116,7 +137,7 @@ class Application extends Services
      */
     public function showProduct(int $int): void
     {
-        $product = $this->getProductById($int,$this->catalog);
+        $product = $this->getProductById($int, $this->catalog);
         echo "<h1>Product:</h1><br>";
         if ($product) {
             echo $product;
@@ -141,35 +162,6 @@ class Application extends Services
     public function setProductsPath($path): void
     {
         $this->productsPath = $path;
-    }
-
-    /**
-     * @return int
-     */
-    private function totalUserCartCost(): int
-    {
-        $cost = 0;
-        foreach ($this->userCart as $product) {
-            $cost += $product->getCost();
-            $cost += $product->getServicesCost();
-        }
-        return $cost;
-    }
-
-
-    private function getProductById(int $int, $arr): bool|ProductInterface
-    {
-        if (!array_key_exists($int - 1, $arr)) {
-            return false;
-        }
-        return $arr[$int - 1];
-    }
-
-    private function getIdProductError(int $int, $arr)
-    {
-        if(!$this->getProductById($int,$arr)){
-            die("Product or service is not exists");
-        }
     }
 }
 

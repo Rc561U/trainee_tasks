@@ -12,6 +12,14 @@ class Configuration extends AbstractService implements ServiceInterface
     public int $cost;
 
     /**
+     * @return string
+     */
+    public function getDeadline(): string
+    {
+        return $this->deadline;
+    }
+
+    /**
      * @param string $deadline
      * @return void
      */
@@ -21,11 +29,11 @@ class Configuration extends AbstractService implements ServiceInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getDeadline(): string
+    public function getCost(): int
     {
-        return $this->deadline;
+        return $this->cost;
     }
 
     /**
@@ -35,13 +43,5 @@ class Configuration extends AbstractService implements ServiceInterface
     public function setCost(int $cost): void
     {
         $this->cost = $cost;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCost(): int
-    {
-        return $this->cost;
     }
 }

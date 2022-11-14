@@ -51,5 +51,6 @@ interface ProductInterface
     public function getCost(): ?int;
 
     public function setService(ServiceInterface $service): void;
+
     public function getService(): array;
 }

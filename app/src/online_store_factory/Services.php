@@ -2,6 +2,9 @@
 
 namespace Crud\Mvc\online_store_factory;
 
+use Crud\Mvc\online_store_factory\core\services\StaticServiceFactory;
+use Exception;
+
 class Services
 {
     protected string $servicesPath;
@@ -24,21 +27,16 @@ class Services
         }
     }
 
+
     /**
      * @param $service
      * @param $values
      * @return void
+     * @throws Exception
      */
     public function addService($service, $values): void
     {
-        $path = "Crud\Mvc\online_store_factory\services\\";
-        if (class_exists($path . $service)) {
-            $class = $path . $service;
-            $this->services[] = new $class($values);
-        } else {
-            echo "Service is  not exist!";
-        }
-
+        $this->services[] = StaticServiceFactory::build($service, $values);
     }
 
     /**
@@ -76,4 +74,19 @@ class Services
     {
         return "<br><h1>Service</h1><br>Service Name: $service<br>Deadline:$service->deadline<br>Cost:$service->cost<br>";
     }
+
+
+    /*
+        public function addService($service, $values): void
+        {
+            $path = "Crud\Mvc\online_store_factory\services\\";
+            if (class_exists($path . $service)) {
+                $class = $path . $service;
+                $this->services[] = new $class($values);
+            } else {
+                echo "Service is  not exist!";
+            }
+
+        }
+    */
 }

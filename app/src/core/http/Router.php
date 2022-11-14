@@ -39,14 +39,11 @@ class Router
         if (@$_SESSION['visit_counter'] >= 3){
             $this->blockUser();
         }
-//        print_r($_SESSION['visit_counter']);
         $this->mapRequest();
 
     }
 
-    /**
-     * @throws RouterException
-     */
+
     private function mapRequest(): void
     {
 
@@ -103,6 +100,7 @@ class Router
         $this->responseProcessor->process($response);
     }
 
+
     private function apiProcessor($controller): void
     {
 
@@ -119,6 +117,7 @@ class Router
         $this->responseProcessor->process($response);
     }
 
+
     private function createResponseObject($type): ResponseInterface
     {
         return match ($type) {
@@ -133,10 +132,12 @@ class Router
         return "\Crud\Mvc\controllers\\$currentController";
     }
 
+
     public function setRoute(string $method, string $uri, string $controller): void
     {
         $this->routes[] = ["method" => $method, "uri" => $uri, "controller" => $controller];
     }
+
 
     public function validateRouter(): bool
     {
@@ -147,7 +148,7 @@ class Router
         foreach ($this->routes as $router) {
 
             if (method_exists(UserController::class, $action)) {
-                $this->currentController = "UserController"; //$router['controller'];
+                $this->currentController = $router['controller'];
                 $this->currentMethod = $router['method'];
                 $this->currentAction = $action;
                 return true;
@@ -168,13 +169,14 @@ class Router
         $error = new UserController();
         $error->error();
         exit();
-        //throw new RouterException('No controller for this route');
     }
+
 
     private function validateUserApiUri($uri, $savedUri): bool
     {
         return preg_match("/^api\/v1\/user\/[0-9]+$/", $uri) && $savedUri == "api/v1/user/{id}";
     }
+
 
     private function getApiUserId($method, $uri): void
     {
@@ -187,6 +189,7 @@ class Router
         }
     }
 
+
     private function getUserId(): void
     {
         $params = $this->request->getParams();
@@ -198,24 +201,7 @@ class Router
             $this->currentUserid = $inputData["id"];
         }
     }
-    private function getUserIP()
-    {
-        //check ip from share internet
-        if (!empty($_SERVER['HTTP_CLIENT_IP']))
-        {
-            $ip=$_SERVER['HTTP_CLIENT_IP'];
-        }
-        //to check ip is pass from proxy
-        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-        {
-            $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        else
-        {
-            $ip=$_SERVER['REMOTE_ADDR'];
-        }
-        return $ip;
-    }
+
 
     private function blockUser(){
         $response = $this->createResponseObject('html');
@@ -228,7 +214,5 @@ class Router
         $this->responseProcessor->process($response);
         exit();
     }
-
-
 
 }

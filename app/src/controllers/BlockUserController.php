@@ -92,7 +92,6 @@ class BlockUserController extends AbstractController
     }
 
 
-
     private function timer(){
         $res = $this->database->getLastBannedUserIp($this->ip);
         $datetime1 = \DateTime::createFromFormat('Y-m-d H:i:s', $res["expired_date"]);

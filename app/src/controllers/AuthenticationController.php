@@ -30,7 +30,6 @@ class AuthenticationController extends AbstractController
     {
         parent::__construct($request, $response);
         $this->database = new Authentication();
-//        print_r($_SESSION);
     }
 
     public function registration()
@@ -76,7 +75,7 @@ class AuthenticationController extends AbstractController
                 $resultMsg['session'] = $_SESSION['session'];
             }
             if (array_key_exists("success", $resultMsg)) {
-//                $this->response->setHeaders(["Location: /"]);
+                $this->response->setHeaders(["Location: /"]);
                 $result = ['template' => 'home_templates/home.html.twig', 'data' => $resultMsg];
             } else {
                 $result = ['template' => 'registration_templates/login.html.twig', 'data' => $resultMsg];
@@ -125,7 +124,7 @@ class AuthenticationController extends AbstractController
         unset($_SESSION['visit_counter']);
         unset($_SESSION['session']);
         $this->response->setCookie(["name" => "User-Token", "token" => '', "expire" => time() - 3600 * 60]);
-//        $this->response->setHeaders(["Location: /"]);
+        $this->response->setHeaders(["Location: /"]);
         $result = ['template' => 'home_templates/home.html.twig', 'data' => null];
         $this->response->setBody($result);
         return $this->response;
@@ -133,8 +132,6 @@ class AuthenticationController extends AbstractController
 
     private function startSession()
     {
-//        $timestamp1 = strtotime($this->expired);
-//        $this->response->setCookie(["name" => "User-Token", "token" => $this->token, "expire" => $timestamp1]);
         $_SESSION['session'] = ['username' => $this->userNameFromDb];
     }
 
@@ -185,13 +182,11 @@ class AuthenticationController extends AbstractController
         $this->response->setHeaders(["Authorization: Bearer ".$token]);
         $this->database->saveUserToken($data["id"],$token,$this->expiredStr);
         $this->response->setCookie(["name" => "User-Token", "token" => $token, "expire" => $this->expiredUnix]);
-//        $this->token =  bin2hex(random_bytes(16));
     }
     private function expired()
     {
         $dateTime = new \DateTime();
         $dateTime->modify('+1 week');
-//        echo $dateTime;
         $this->expiredStr = $dateTime->format('Y-m-d H:i:s');
         $this->expiredUnix = strtotime($this->expiredStr);
     }

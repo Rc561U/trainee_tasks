@@ -25,7 +25,6 @@ abstract class AbstractController
         $this->response = $response;
     }
 
-//    abstract public function execute(): ResponseInterface;
 
     public function isAuthoritize()
     {
@@ -36,9 +35,8 @@ abstract class AbstractController
         if(isset($_COOKIE["User-Token"]) && $this->is_valid($_COOKIE["User-Token"]) || $this->payload) {
             $this->payload['name'] = $this->getPayload()['name'];
             return true;
-        }else{
-            return false;
         }
+        return false;
 
     }
 }

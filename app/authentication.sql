@@ -1,27 +1,13 @@
-CREATE TABLE IF NOT EXISTS `authentication`
+create table authentication
 (
-    `id` int
-(
-    11
-) NOT NULL AUTO_INCREMENT,
-    `email` varchar
-(
-    100
-) NOT NULL,
-    `name` varchar
-(
-    100
-) NOT NULL,
-    `password` varchar
-(
-    60
-) NOT NULL,
-    PRIMARY KEY
-(
-    `id`
-),
-    UNIQUE KEY `unique_email`
-(
-    `email`
-)
-    ) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=latin1;
+    id          int auto_increment
+        primary key,
+    email       varchar(100)                          not null,
+    password    varchar(60)                           not null,
+    first_name  varchar(60)                           not null,
+    last_name   varchar(60)                           not null,
+    crated_date timestamp default current_timestamp() null,
+    constraint unique_email
+        unique (email)
+);
+

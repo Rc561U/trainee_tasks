@@ -69,14 +69,14 @@
                 </thead>
                 <tbody>
                 <tr>
+
                     {% for file in data %}
                     {% set counter = ( counter | default(0) ) + 1 %}
                     {% set megabyte = (file.size / (1024 ** 2))|round(3) %}
-                    <p></p>
-                    {#                <th scope="row"></th> #}
+                    {% if megabyte %}
                     <td>{{ counter }}</td>
                     <td>
-                        {% if file.mime == 'image/jpeg' %}
+                        {% if file.mime == 'image/jpeg' and file.mime is not null %}
                             <img src="{{ file.path }}" title="{{ file.name }}" width="100" height="100"
                                  alt="{{ file.name }}">
 
@@ -113,6 +113,7 @@
                         <a href="{{ file.path }}" class="btn btn-success" download>Download</a>
                     </td>
                 </tr>
+                {% endif %}
                 {% endfor %}
 
                 </tbody>

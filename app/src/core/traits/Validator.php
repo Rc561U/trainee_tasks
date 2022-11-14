@@ -12,7 +12,7 @@ trait Validator
     public function validate($email, $name, $gender, $status, $id = null)
     {
         $model = new User();
-        $this->checkEmail($email, $model);
+        $this->checkEmail($email);
         $this->checkFullName($name);
         $this->checkGender($gender);
         $this->checkStatus($status);

@@ -42,7 +42,6 @@ class UserController extends Controller
 
     public function createPost()
     {
-        echo 12321;
         $inputData = $this->request->getPost();
         $email = $inputData["email"] ?? null;
         $name = $inputData["name"] ?? null;

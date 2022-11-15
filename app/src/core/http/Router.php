@@ -11,11 +11,12 @@ use Crud\Mvc\core\http\response\HtmlResponse;
 use Crud\Mvc\core\http\response\JsonResponse;
 use Crud\Mvc\core\http\response\ResponseInterface;
 use Crud\Mvc\core\http\response\ResponseProcessor;
+use Crud\Mvc\core\traits\ImportTables;
 
 class Router
 {
+    use ImportTables;
 
-//    private RequestInterface $request;
     private ResponseProcessor $responseProcessor;
     private object $request;
     private array $routes;
@@ -31,7 +32,7 @@ class Router
         $res = new RequestCreator();
         $this->request = $res->create();
         $this->responseProcessor = new ResponseProcessor();
-
+        @$this->dump();
     }
 
     public function run(): void
